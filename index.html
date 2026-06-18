@@ -1,0 +1,2576 @@
+<!doctype html>
+<html lang="es">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
+<title>Monedas disponibles</title>
+<meta name="theme-color" content="#ffffff">
+<meta name="background-color" content="#f4f4f5">
+<meta name="application-name" content="Monedas disponibles">
+<meta name="apple-mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+<meta name="apple-mobile-web-app-title" content="Monedas">
+<meta name="mobile-web-app-capable" content="yes">
+<meta name="msapplication-TileColor" content="#111217">
+<link rel="manifest" href="manifest.webmanifest">
+<link rel="apple-touch-icon" href="apple-touch-icon.png">
+<link rel="icon" type="image/png" sizes="192x192" href="icon-192.png">
+
+<style>
+:root{
+  --bg:#f4f4f5;
+  --card:#fff;
+  --text:#111217;
+  --muted:#777;
+  --line:#ececef;
+  --pink:#ff2d55;
+  --pink2:#ff4670;
+  --green:#0f8f73;
+  --greenbg:#dff8ef;
+  --shadow:0 8px 24px rgba(0,0,0,.08);
+}
+*{box-sizing:border-box}
+html,body{
+  margin:0;
+  width:100%;
+  min-height:100%;
+  overflow-x:hidden;
+  font-family:-apple-system,BlinkMacSystemFont,"Segoe UI",Roboto,Arial,sans-serif;
+  background:var(--bg);
+  color:var(--text);
+  -webkit-user-select:none;
+  user-select:none;
+}
+input, textarea{
+  -webkit-user-select:text;
+  user-select:text;
+}
+button,input{font:inherit}
+button{border:0;cursor:pointer;-webkit-tap-highlight-color:transparent}
+button:active{transform:scale(.98)}
+.app{
+  width:100%;
+  max-width:560px;
+  min-height:100dvh;
+  margin:0 auto;
+  padding:10px 12px 92px;
+}
+.top{
+  display:flex;
+  align-items:center;
+  gap:10px;
+  min-height:48px;
+  margin-bottom:8px;
+}
+.logo{
+  width:40px;
+  height:40px;
+  flex:0 0 40px;
+  border-radius:12px;
+  overflow:hidden;
+  background:#000;
+  box-shadow:0 8px 20px rgba(0,0,0,.12);
+}
+.logo img{width:100%;height:100%;object-fit:cover;display:block}
+.title{
+  flex:1;
+  margin:0;
+  display:flex;
+  flex-direction:column;
+  gap:2px;
+  line-height:1.06;
+  font-weight:950;
+  letter-spacing:-.45px;
+  cursor:pointer;
+  user-select:none;
+}
+.titleLabel{
+  font-size:20px;
+  font-weight:950;
+}
+.titleBalance{
+  display:flex;
+  align-items:center;
+  gap:7px;
+  font-size:18px;
+  font-weight:900;
+}
+.titleBalance .tiktokCoin{width:22px;height:22px;flex:0 0 22px;border-radius:50%;box-shadow:0 4px 10px rgba(0,0,0,.12)}
+.titleBalance .tiktokCoin img{width:100%;height:100%;display:block;object-fit:cover}
+.titleHint{font-size:12px;font-weight:700;color:#8a8a8f;letter-spacing:0}
+.icon{
+  width:38px;
+  height:38px;
+  border-radius:50%;
+  background:#fff;
+  box-shadow:var(--shadow);
+  font-weight:950;
+  font-size:18px;
+}
+.card{
+  background:#fff;
+  border-radius:18px;
+  box-shadow:var(--shadow);
+  border:1px solid rgba(0,0,0,.04);
+  overflow:hidden;
+  margin-bottom:11px;
+}
+.safe{
+  height:34px;
+  width:max-content;
+  max-width:86%;
+  margin:0 auto;
+  padding:0 22px;
+  border-radius:0 0 15px 15px;
+  background:var(--greenbg);
+  color:var(--green);
+  display:flex;
+  align-items:center;
+  justify-content:center;
+  gap:7px;
+  font-size:15px;
+  font-weight:950;
+  box-shadow:0 5px 16px rgba(15,143,115,.12);
+}
+.profile{padding:0 14px 12px}
+.profileRow{
+  display:flex;
+  align-items:center;
+  gap:13px;
+  padding-top:13px;
+}
+.avatarFrame{
+  width:90px;
+  height:90px;
+  flex:0 0 90px;
+  border-radius:50%;
+  padding:5px;
+  background:linear-gradient(135deg,var(--pink),#ff9bad);
+  box-shadow:0 0 0 5px rgba(255,45,85,.14),0 14px 30px rgba(255,45,85,.25);
+}
+.avatarInner{
+  width:100%;
+  height:100%;
+  border-radius:50%;
+  overflow:hidden;
+  position:relative;
+  border:3px solid #fff;
+  background:#e8e8ea;
+}
+.avatarInner img{
+  position:absolute;
+  inset:0;
+  width:100%;
+  height:100%;
+  object-fit:cover;
+  display:block;
+  opacity:0;
+  transition:opacity .2s ease;
+  z-index:2;
+}
+.avatarInner img.show{opacity:1}
+.avatarInner.hasPhoto .fallback{display:none}
+.fallback{
+  position:absolute;
+  inset:0;
+  display:grid;
+  place-items:center;
+  color:#fff;
+  font-size:32px;
+  font-weight:950;
+  background:linear-gradient(135deg,#e92753,#ff83a0);
+  z-index:1;
+}
+.info{min-width:0;flex:1}
+.name{
+  margin:0 0 6px;
+  font-size:24px;
+  font-weight:950;
+  line-height:1.08;
+  white-space:nowrap;
+  overflow:hidden;
+  text-overflow:ellipsis;
+}
+.meta{
+  color:#666;
+  font-size:15px;
+  white-space:nowrap;
+  overflow:hidden;
+  text-overflow:ellipsis;
+}
+.reload{
+  width:39px;
+  height:39px;
+  flex:0 0 39px;
+  border-radius:50%;
+  background:#f2f2f3;
+  font-weight:950;
+  font-size:18px;
+}
+.searchBox{
+  margin-top:12px;
+  padding-top:12px;
+  border-top:1px solid var(--line);
+}
+.searchTitle{
+  margin:0 0 8px;
+  font-size:18px;
+  font-weight:950;
+}
+.searchRow{display:flex;gap:8px}
+.inputWrap{position:relative;flex:1;min-width:0}
+.inputWrap span{
+  position:absolute;
+  left:12px;
+  top:50%;
+  transform:translateY(-50%);
+  width:18px;
+  height:18px;
+  display:grid;
+  place-items:center;
+  color:#777;
+}
+.searchIcon svg{width:18px;height:18px;display:block;stroke:currentColor}
+input{
+  width:100%;
+  height:45px;
+  border:1px solid #dddde1;
+  outline:0;
+  border-radius:14px;
+  padding:0 12px 0 38px;
+  background:#fafafa;
+}
+input:focus{
+  border-color:#ff85a0;
+  background:#fff;
+  box-shadow:0 0 0 4px rgba(255,45,85,.08);
+}
+.primary{
+  height:45px;
+  border-radius:14px;
+  padding:0 18px;
+  background:linear-gradient(135deg,var(--pink),var(--pink2));
+  color:#fff;
+  font-weight:950;
+  box-shadow:0 8px 18px rgba(255,45,85,.24);
+  white-space:nowrap;
+}
+.primary:disabled{opacity:.68}
+.status{
+  min-height:0;
+  margin-top:0;
+  font-size:12px;
+  color:#777;
+  font-weight:750;
+  white-space:nowrap;
+  overflow:hidden;
+  text-overflow:ellipsis;
+  max-height:0;
+  opacity:0;
+  transition:.18s ease;
+}
+.status.show{margin-top:7px;max-height:22px;opacity:1}
+.status.ok{color:#078866}
+.status.err{color:#ce2b4c}
+.reward{
+  width:100%;
+  background:#fff;
+  text-align:left;
+  margin-top:10px;
+  padding-top:10px;
+  border-top:1px solid var(--line);
+  display:flex;
+  align-items:center;
+  gap:11px;
+}
+.rewardIcon{
+  width:39px;
+  height:39px;
+  flex:0 0 39px;
+  border-radius:12px;
+  background:#fff5d9;
+  display:grid;
+  place-items:center;
+  font-size:24px;
+}
+.rewardText{
+  flex:1;
+  min-width:0;
+  font-size:16px;
+  line-height:1.15;
+  font-weight:950;
+}
+.chev{font-size:26px;color:#777}
+.rechargeHead{
+  padding:12px 15px;
+  border-bottom:1px solid var(--line);
+  font-size:19px;
+  font-weight:950;
+}
+.rechargeBody{padding:12px 15px 15px}
+.save{
+  color:#ef3f65;
+  font-size:14.5px;
+  line-height:1.25;
+  margin-bottom:10px;
+}
+.infoDot{
+  display:inline-grid;
+  place-items:center;
+  width:17px;
+  height:17px;
+  border-radius:50%;
+  border:1.6px solid #999;
+  color:#777;
+  font-size:11px;
+  font-weight:950;
+  vertical-align:middle;
+}
+.grid{
+  display:grid;
+  grid-template-columns:repeat(3,minmax(0,1fr));
+  gap:9px;
+}
+.coinBtn{
+  height:68px;
+  border-radius:12px;
+  background:#eeeef0;
+  border:1.5px solid transparent;
+  display:flex;
+  flex-direction:column;
+  align-items:center;
+  justify-content:center;
+  position:relative;
+  overflow:hidden;
+  color:#111;
+}
+.coinBtn.active{
+  background:#fff4f7;
+  border-color:var(--pink);
+}
+.recent{
+  position:absolute;
+  top:0;
+  left:0;
+  background:#d9d9dc;
+  color:#888;
+  padding:2px 7px;
+  border-radius:0 0 8px 0;
+  font-size:11px;
+  font-weight:950;
+}
+.num{
+  display:flex;
+  align-items:center;
+  gap:5px;
+  font-size:20px;
+  font-weight:950;
+  line-height:1;
+}
+.tiktokCoin{
+  width:20px;
+  height:20px;
+  border-radius:50%;
+  overflow:hidden;
+  background:#000;
+  display:inline-block;
+  flex:0 0 20px;
+}
+.tiktokCoin img{width:100%;height:100%;object-fit:cover;display:block}
+.price{
+  margin-top:4px;
+  color:#666;
+  font-size:13px;
+  font-weight:850;
+}
+.custom{font-size:15px;font-weight:950}
+.bottom{
+  position:fixed;
+  left:0;
+  right:0;
+  bottom:0;
+  z-index:20;
+  background:rgba(255,255,255,.96);
+  backdrop-filter:blur(12px);
+  border-top:1px solid rgba(0,0,0,.08);
+  padding:8px 12px calc(8px + env(safe-area-inset-bottom));
+}
+.bottomInner{max-width:560px;margin:0 auto}
+.payLine{
+  display:flex;
+  align-items:center;
+  justify-content:space-between;
+  gap:10px;
+  color:#777;
+  font-size:13px;
+  margin-bottom:7px;
+}
+.icons{display:flex;gap:5px;align-items:center}
+.payIcon{
+  height:21px;
+  min-width:34px;
+  border-radius:5px;
+  background:#fff;
+  border:1px solid #ececf0;
+  display:grid;
+  place-items:center;
+  overflow:hidden;
+  padding:2px 5px;
+}
+.payIcon img{max-width:100%;max-height:100%;object-fit:contain;display:block}
+.buy{
+  width:100%;
+  height:52px;
+  border-radius:14px;
+  background:linear-gradient(135deg,var(--pink),#ff3260);
+  color:#fff;
+  font-size:19px;
+  font-weight:950;
+  box-shadow:0 11px 26px rgba(255,45,85,.25);
+}
+.buy,.confirm{position:relative;overflow:hidden}
+.buy:after,.confirm:after{
+  content:"";
+  position:absolute;
+  top:0;
+  left:-75%;
+  width:48%;
+  height:100%;
+  background:linear-gradient(90deg,transparent,rgba(255,255,255,.36),transparent);
+  transform:skewX(-18deg);
+  animation:shine 1.8s infinite;
+}
+@keyframes shine{0%{left:-75%}55%,100%{left:125%}}
+.modal{
+  position:fixed;
+  inset:0;
+  background:rgba(0,0,0,.38);
+  display:flex;
+  align-items:flex-end;
+  justify-content:center;
+  opacity:0;
+  pointer-events:none;
+  transition:.18s;
+  z-index:60;
+}
+.modal.show{opacity:1;pointer-events:auto}
+.sheet{
+  width:100%;
+  max-width:560px;
+  max-height:92dvh;
+  overflow:auto;
+  background:#fff;
+  border-radius:22px 22px 0 0;
+  box-shadow:0 -12px 35px rgba(0,0,0,.15);
+}
+.sheetHead{
+  height:56px;
+  padding:0 16px;
+  display:flex;
+  align-items:center;
+  justify-content:space-between;
+  border-bottom:1px solid var(--line);
+}
+.back,.help{
+  width:36px;
+  height:36px;
+  border-radius:50%;
+  background:#fff;
+  font-weight:950;
+  font-size:23px;
+}
+.help{border:2px solid #111;font-size:17px}
+.sheetTitle{font-size:20px;font-weight:950}
+.sheetSafe{
+  height:46px;
+  background:var(--greenbg);
+  color:var(--green);
+  display:flex;
+  align-items:center;
+  justify-content:center;
+  font-size:16px;
+  font-weight:950;
+}
+.block,.methods,.terms{padding:16px;border-bottom:1px solid var(--line)}
+.orderRow{
+  display:flex;
+  justify-content:space-between;
+  align-items:center;
+  gap:10px;
+  margin:8px 0;
+  font-size:17px;
+}
+.orderUser{
+  min-width:0;
+  max-width:58%;
+  display:flex;
+  align-items:center;
+  gap:8px;
+  font-weight:850;
+  white-space:nowrap;
+  overflow:hidden;
+  text-overflow:ellipsis;
+}
+.orderUser img{width:31px;height:31px;border-radius:50%;object-fit:cover;background:#eee}
+.methodTitle{display:flex;justify-content:space-between;color:#777;margin-bottom:8px}
+.method{
+  width:100%;
+  display:flex;
+  align-items:center;
+  gap:12px;
+  padding:12px 0;
+  background:#fff;
+  text-align:left;
+}
+.methodLogo{
+  width:45px;
+  height:28px;
+  border-radius:6px;
+  background:#fff;
+  border:1px solid #ececf0;
+  display:grid;
+  place-items:center;
+  overflow:hidden;
+  padding:2px;
+}
+.methodLogo img{max-width:100%;max-height:100%;object-fit:contain;display:block}
+.methodLogo.plainLogo{background:transparent;border:none;border-radius:0;padding:0;width:56px;height:34px}
+.methodLogo.plainLogo img{max-width:100%;max-height:100%;object-fit:contain}
+.visaTextLogo{display:inline-flex;align-items:center;justify-content:center;background:transparent;border:none;color:#1a49d6;font-weight:900;letter-spacing:.6px;font-style:italic;font-size:23px;line-height:1}
+.method .visaTextLogo{width:48px;justify-content:flex-start;font-size:18px;letter-spacing:.4px}
+.payIcon .visaTextLogo{font-size:15px;min-width:34px;justify-content:center}
+.methodText{flex:1;font-size:16px}
+.radio{width:23px;height:23px;border-radius:50%;border:2px solid #ccc}
+.method.active .radio{border-color:var(--pink)}
+.method.active .radio:after{content:"";display:block;width:11px;height:11px;border-radius:50%;background:var(--pink);margin:4px}
+.terms{display:none;color:#666;font-size:14px;line-height:1.42}
+.total{display:flex;justify-content:space-between;padding:15px 16px 10px;font-size:21px;font-weight:950}
+.cta{padding:0 16px 18px}
+.confirm{
+  width:100%;
+  height:52px;
+  border-radius:14px;
+  background:linear-gradient(135deg,var(--pink),#ff3260);
+  color:#fff;
+  font-size:18px;
+  font-weight:950;
+}
+.success{
+  position:fixed;
+  inset:0;
+  background:linear-gradient(180deg,#fff,#f8f8fa);
+  z-index:100;
+  display:none;
+  place-items:center;
+  text-align:center;
+  padding:16px;
+}
+.success.show{display:grid}
+.successCard{
+  width:100%;
+  max-width:310px;
+  background:#fff;
+  border-radius:22px;
+  padding:20px 15px;
+  box-shadow:0 12px 34px rgba(0,0,0,.10);
+}
+.loader{
+  width:60px;
+  height:60px;
+  border-radius:50%;
+  margin:0 auto 12px;
+  border:6px solid #f1f1f2;
+  border-top-color:var(--pink);
+  animation:spin .85s linear infinite;
+}
+.check{
+  width:68px;
+  height:68px;
+  border-radius:50%;
+  margin:0 auto 11px;
+  background:#10b981;
+  color:#fff;
+  font-size:40px;
+  display:none;
+  place-items:center;
+  animation:checkPop .46s cubic-bezier(.18,1.35,.35,1), checkPulse 1.8s ease-in-out infinite .7s;
+}
+.successCard.done .loader{display:none}
+.successCard.done .check{display:grid}
+.successCard h2{font-size:21px;margin:0 0 6px}
+.successCard p{margin:0;color:#777;font-size:14px;line-height:1.35}
+.actions{display:none;margin-top:14px;gap:8px}
+.successCard.done .actions{display:grid}
+.actions .primary,.outline{height:42px;font-size:14px;border-radius:12px}
+.outline{background:#f1f1f3;font-weight:900}
+.toast{
+  position:fixed;
+  left:50%;
+  bottom:92px;
+  transform:translateX(-50%) translateY(16px) scale(.98);
+  width:min(330px,calc(100vw - 28px));
+  background:rgba(255,255,255,.98);
+  color:#161616;
+  border:1px solid rgba(0,0,0,.06);
+  box-shadow:0 16px 38px rgba(0,0,0,.14);
+  border-radius:20px;
+  padding:12px 14px;
+  display:flex;
+  align-items:center;
+  gap:12px;
+  opacity:0;
+  pointer-events:none;
+  transition:.22s ease;
+  z-index:200;
+  text-align:left;
+}
+.toast.show{opacity:1;transform:translateX(-50%) translateY(0) scale(1)}
+.toastIcon{
+  width:36px;
+  height:36px;
+  min-width:36px;
+  border-radius:50%;
+  display:grid;
+  place-items:center;
+  color:#fff;
+  font-size:18px;
+  font-weight:900;
+  background:linear-gradient(135deg,#4f46e5,#7c3aed);
+}
+.toast.t-info .toastIcon{background:linear-gradient(135deg,#4f46e5,#7c3aed)}
+.toast.t-success .toastIcon{background:linear-gradient(135deg,#10b981,#22c55e)}
+.toast.t-warn .toastIcon{background:linear-gradient(135deg,#ff8a00,#ff2d55)}
+.toastTextWrap{flex:1;min-width:0}
+.toastTitle{font-size:13px;line-height:1.1;font-weight:900;color:#141414;margin-bottom:3px}
+.toastMsg{font-size:13px;line-height:1.25;color:#666;word-break:break-word}
+@media(max-width:480px){
+  .toast{bottom:88px;width:min(320px,calc(100vw - 24px));padding:11px 12px;border-radius:18px}
+  .toastIcon{width:34px;height:34px;min-width:34px;font-size:17px}
+}
+
+.fullscreenModal{align-items:stretch}.fullscreenModal .sheet{max-width:none;height:100dvh;max-height:100dvh;border-radius:0;box-shadow:none}.historySheet{max-width:none}.historyBody{padding:14px 14px calc(18px + env(safe-area-inset-bottom));min-height:calc(100dvh - 56px);background:#fff}.detailSheet{max-width:none}.detailBody{padding:12px 12px calc(16px + env(safe-area-inset-bottom));display:grid;gap:10px;background:linear-gradient(180deg,#eef2f8 0%,#e8edf6 100%);min-height:calc(100dvh - 56px)}.detailHero{background:linear-gradient(180deg,#ffffff 0%,#fdfdff 100%);border:1px solid #dfe6f2;border-radius:18px;padding:13px;display:flex;align-items:center;gap:12px;box-shadow:0 10px 20px rgba(19,24,35,.07)}.detailAvatar{width:70px;height:70px;border-radius:50%;object-fit:cover;background:#ececef;border:3px solid #fff;box-shadow:0 6px 16px rgba(255,45,85,.14)}.detailFallback{width:70px;height:70px;border-radius:50%;display:grid;place-items:center;background:linear-gradient(135deg,#ff5479,#ff92aa);color:#fff;font-size:30px;font-weight:950;border:3px solid #fff;box-shadow:0 6px 16px rgba(255,45,85,.14)}.detailName{font-size:22px;font-weight:950;line-height:1.02;color:#111;margin:0 0 2px}.detailUser{font-size:15px;color:#666d7a}.detailBadge{display:inline-flex;align-items:center;gap:6px;margin-top:7px;padding:6px 11px;border-radius:999px;background:#dff6ee;color:#0d8f71;font-size:12px;font-weight:900}.statGrid{display:grid;grid-template-columns:1fr 1fr;gap:9px}.statBox,.miniStat{border-radius:16px;padding:12px;box-shadow:0 8px 18px rgba(19,24,35,.05);border:1px solid transparent}.statBox:nth-child(1){background:linear-gradient(180deg,#ecfff8 0%,#dff8ee 100%);border-color:#c8efdd}.statBox:nth-child(2){background:linear-gradient(180deg,#eef4ff 0%,#e0ebff 100%);border-color:#cfdfff}.profileDataGrid{display:grid;grid-template-columns:1fr 1fr;gap:9px}.profileDataGrid .miniStat:nth-child(1){background:linear-gradient(180deg,#fff6ea 0%,#ffeed6 100%);border-color:#f5dfb7}.profileDataGrid .miniStat:nth-child(2){background:linear-gradient(180deg,#fff0f4 0%,#ffe1ea 100%);border-color:#f9ccd9}.profileDataGrid .miniStat:nth-child(3){background:linear-gradient(180deg,#f4f1ff 0%,#e7e1ff 100%);border-color:#d8cffd}.profileDataGrid .miniStat:nth-child(4){background:linear-gradient(180deg,#eefaf8 0%,#def3ee 100%);border-color:#caebe3}.statLabel,.miniLabel{font-size:11.5px;color:#656c79;margin-bottom:4px;font-weight:900;letter-spacing:.1px}.statValue{font-size:18px;font-weight:950;color:#111;line-height:1.08}.miniValue{font-size:17px;color:#111;font-weight:950;line-height:1.08}.statSub,.miniSub{display:none}.detailCard{background:linear-gradient(180deg,#ffffff 0%,#f9fbff 100%);border:1px solid #dfe6f2;border-radius:16px;padding:13px;box-shadow:0 8px 18px rgba(19,24,35,.05)}.detailCard h3{margin:0 0 8px;font-size:15px}.detailRow{display:flex;justify-content:space-between;gap:10px;padding:9px 0;border-bottom:1px solid #e9eef6}.detailRow:last-child{border-bottom:0;padding-bottom:0}.detailRow span{color:#707786;font-size:12px;font-weight:900}.detailRow strong{color:#111;text-align:right;font-size:13px}.detailActions{display:grid;grid-template-columns:1fr 1fr;gap:9px}.detailBtn{height:44px;border-radius:14px;font-weight:950;font-size:15px}.detailBtn.secondary{background:#fff;border:1px solid #dfe5ee;color:#222}@media(min-width:720px){.historyBody,.detailBody{max-width:760px;width:100%;margin:0 auto}.detailHero{padding:15px}.detailName{font-size:24px}}
+.sheetHeadActions{display:flex;align-items:center;gap:8px}
+.clearMini{background:#f3f3f5;color:#444;border-radius:999px;padding:8px 12px;font-weight:900;font-size:13px}
+.historyBody{padding:14px 14px 18px}
+.historyHint{font-size:13px;color:#777;margin:0 0 12px}
+.historyList{display:grid;gap:10px}
+.historyItem{width:100%;background:#fff;border:1px solid #ececf0;border-radius:16px;padding:11px;text-align:left;display:flex;align-items:center;gap:11px;box-shadow:0 5px 16px rgba(0,0,0,.04)}
+.historyAvatar{width:52px;height:52px;border-radius:50%;object-fit:cover;background:#ececef;flex:0 0 52px;border:2px solid #fff;box-shadow:0 4px 14px rgba(255,45,85,.18)}
+.historyFallback{width:52px;height:52px;border-radius:50%;background:linear-gradient(135deg,#ff5479,#ff92aa);display:grid;place-items:center;color:#fff;font-size:22px;font-weight:950;flex:0 0 52px}
+.historyMain{min-width:0;flex:1}
+.historyTop{display:flex;align-items:center;gap:8px;margin-bottom:3px}
+.historyName{font-size:16px;font-weight:950;line-height:1.1;color:#111;min-width:0;overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
+.historyTag{font-size:11px;font-weight:900;padding:4px 7px;border-radius:999px;background:#eef8f5;color:#0f8f73;white-space:nowrap}
+.historySub,.historyTime{font-size:12.5px;color:#70727a;line-height:1.28;overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
+.historyGo{font-size:24px;color:#8a8d96;line-height:1}
+.historyEmpty{padding:18px 14px;border:1px dashed #d9dbe1;border-radius:16px;background:#fafafb;text-align:center;color:#777}
+.historyEmpty strong{display:block;color:#222;font-size:16px;margin-bottom:5px}
+@keyframes spin{to{transform:rotate(360deg)}}
+@keyframes checkPop{from{transform:scale(.58);opacity:.2}to{transform:scale(1);opacity:1}}
+@keyframes checkPulse{0%,100%{box-shadow:0 0 0 0 rgba(16,185,129,.22)}50%{box-shadow:0 0 0 10px rgba(16,185,129,.08)}}
+@media(min-width:760px){
+  .app{max-width:650px}
+  .bottomInner{max-width:650px;display:grid;grid-template-columns:1fr 290px;gap:16px;align-items:center}
+  .payLine{justify-content:flex-start;margin-bottom:0}
+  .avatarFrame{width:96px;height:96px;flex-basis:96px}
+  .modal{align-items:center;padding:18px}
+  .sheet{border-radius:24px}
+}
+@media(max-width:380px){
+  .app{padding-left:9px;padding-right:9px}
+  .title{font-size:20px}
+  .avatarFrame{width:80px;height:80px;flex-basis:80px}
+  .name{font-size:22px}
+  .primary{padding:0 14px}
+  .coinBtn{height:64px}
+  .num{font-size:18px}
+  .price{font-size:12px}
+  .buy{font-size:17px}
+}
+@media(max-height:720px){
+  .app{padding-top:7px}
+  .top{min-height:40px}
+  .profileRow{padding-top:9px}
+  .avatarFrame{width:78px;height:78px;flex-basis:78px}
+  .name{font-size:22px}
+  .reward{margin-top:8px;padding-top:8px}
+  .rewardIcon{width:34px;height:34px;flex-basis:34px;font-size:22px}
+  .rewardText{font-size:15px}
+  .searchBox{margin-top:9px;padding-top:9px}
+  input,.primary{height:42px}
+  .rechargeHead{padding:10px 14px}
+  .rechargeBody{padding:10px 14px 12px}
+  .save{font-size:13.5px;margin-bottom:8px}
+  .coinBtn{height:59px}
+  .buy{height:48px}
+}
+
+/* Login Firebase */
+.app.auth-hidden{display:none!important}
+.loginScreen{
+  width:100%;
+  max-width:560px;
+  min-height:100dvh;
+  margin:0 auto;
+  padding:22px 18px calc(24px + env(safe-area-inset-bottom));
+  display:grid;
+  place-items:center;
+  background:linear-gradient(180deg,#f8f9fc 0%,#f1f3f8 100%);
+}
+.loginCard{
+  width:100%;
+  background:#fff;
+  border:1px solid #e9edf3;
+  border-radius:26px;
+  padding:24px 20px 20px;
+  box-shadow:0 18px 44px rgba(24,39,75,.10);
+}
+.loginBrand{
+  display:flex;
+  align-items:center;
+  gap:12px;
+  margin-bottom:22px;
+}
+.loginLogo{
+  width:54px;
+  height:54px;
+  border-radius:16px;
+  overflow:hidden;
+  background:#000;
+  box-shadow:0 10px 20px rgba(0,0,0,.14);
+  flex:0 0 54px;
+}
+.loginLogo img{width:100%;height:100%;object-fit:cover;display:block}
+.loginTitle{margin:0;font-size:26px;line-height:1.05;font-weight:950;color:#111217;letter-spacing:-.5px}
+.loginSub{margin:4px 0 0;font-size:14px;color:#767b87;font-weight:650;line-height:1.3}
+.loginField{display:grid;gap:7px;margin-bottom:12px}
+.loginField label{font-size:13px;color:#6f7582;font-weight:850}
+.loginInputWrap{height:54px;border:1.5px solid #e4e7ee;border-radius:17px;background:#f9fafc;display:flex;align-items:center;gap:10px;padding:0 14px;transition:.18s ease}
+.loginInputWrap:focus-within{border-color:#ff2d55;background:#fff;box-shadow:0 0 0 4px rgba(255,45,85,.08)}
+.loginInputWrap svg{width:19px;height:19px;stroke:#777;flex:0 0 19px}
+.loginInputWrap input{border:0;outline:0;background:transparent;width:100%;height:100%;font-size:16px;color:#111;font-weight:700}
+.loginInputWrap input::placeholder{color:#aaa;font-weight:650}
+.loginBtn{width:100%;height:54px;border-radius:17px;background:linear-gradient(135deg,#ff2d55,#ff5479);color:#fff;font-size:17px;font-weight:950;box-shadow:0 14px 24px rgba(255,45,85,.22);margin-top:4px}
+.loginBtn:disabled{opacity:.65;filter:saturate(.7)}
+.loginError{min-height:18px;margin:10px 2px 0;color:#d7264d;font-size:13px;font-weight:850;text-align:center}
+.loginLoading{position:fixed;inset:0;background:linear-gradient(180deg,#f8f9fc 0%,#eef1f7 100%);display:grid;place-items:center;z-index:9999;padding:24px;color:#111}
+.loginLoading.hidden{display:none}
+.loadingWrap{display:grid;justify-items:center;gap:14px;text-align:center}
+.loadingLogoShell{position:relative;width:94px;height:94px;display:grid;place-items:center;animation:loadingFloat 2.2s ease-in-out infinite}
+.loadingGlow{position:absolute;inset:8px;border-radius:28px;background:radial-gradient(circle,rgba(255,45,85,.18) 0%,rgba(255,45,85,.06) 48%,rgba(255,45,85,0) 72%);filter:blur(6px);animation:loadingGlowPulse 1.9s ease-in-out infinite}
+.loadingLogo{position:relative;z-index:2;width:72px;height:72px;border-radius:20px;overflow:hidden;background:#000;box-shadow:0 14px 28px rgba(0,0,0,.18),0 0 0 4px rgba(255,255,255,.95)}
+.loadingLogo img{width:100%;height:100%;object-fit:cover;display:block}
+.loadingText{font-size:22px;font-weight:950;letter-spacing:-.35px;color:#111217}
+.loadingSub{font-size:13px;font-weight:700;color:#7b808c;margin-top:-6px}
+.loadingDots{display:flex;align-items:center;gap:7px}
+.loadingDots span{width:8px;height:8px;border-radius:50%;background:linear-gradient(135deg,#ff2d55,#ff6b8a);opacity:.28;animation:loadingDots 1.2s infinite ease-in-out}
+.loadingDots span:nth-child(2){animation-delay:.16s}
+.loadingDots span:nth-child(3){animation-delay:.32s}
+@keyframes loadingFloat{0%,100%{transform:translateY(0)}50%{transform:translateY(-6px)}}
+@keyframes loadingGlowPulse{0%,100%{opacity:.8;transform:scale(1)}50%{opacity:1;transform:scale(1.08)}}
+@keyframes loadingDots{0%,80%,100%{opacity:.28;transform:scale(.8)}40%{opacity:1;transform:scale(1.15)}}
+ .logoutBtn{width:100%;height:44px;border-radius:14px;background:#f2f3f6;color:#222;font-weight:950;font-size:15px;margin-top:4px}
+.resetDeviceBtn{width:100%;height:42px;border-radius:14px;background:linear-gradient(135deg,#ff2d55,#ff5479);color:#fff;font-weight:950;font-size:14px;margin-top:10px;box-shadow:0 8px 18px rgba(255,45,85,.16)}
+.resetDeviceBtn:disabled{opacity:.65}
+@media(max-width:430px){
+  .loginScreen{padding:18px 14px}
+  .loginCard{border-radius:24px;padding:22px 18px 18px}
+  .loginTitle{font-size:24px}
+}
+
+</style>
+
+<style id="coin-icon-fix">
+.tiktokCoin{
+  width:24px !important;
+  height:24px !important;
+  border-radius:50% !important;
+  background:#f5c531 !important;
+  box-shadow:0 1px 4px rgba(0,0,0,.14) !important;
+}
+.tiktokCoin img{
+  width:100% !important;
+  height:100% !important;
+  object-fit:cover !important;
+  display:block !important;
+}
+.payIcon{
+  min-width:40px !important;
+  padding:2px 7px !important;
+}
+.payIcon img{
+  width:auto !important;
+  max-width:100% !important;
+  max-height:16px !important;
+  object-fit:contain !important;
+}
+.methodLogo img{
+  width:auto !important;
+  max-width:100% !important;
+  max-height:20px !important;
+  object-fit:contain !important;
+}
+</style>
+
+
+<style>
+
+.helpScreen{background:linear-gradient(180deg,#f7f8fc 0%,#f1f3f8 100%);border-radius:0 !important;max-width:500px;width:100%;height:100dvh;max-height:100dvh;overflow:auto}
+.helpBody{padding:10px 10px calc(14px + env(safe-area-inset-bottom));display:grid;gap:9px}
+.helpCard{background:#fff;border:1px solid #e9edf3;border-radius:16px;padding:11px;box-shadow:0 5px 14px rgba(24,39,75,.045)}
+.helpCard h3{margin:0 0 8px;font-size:14px;font-weight:900;color:#171922}
+.helpCard p{margin:0;color:#6d7381;line-height:1.35}
+.optionRow{display:grid;grid-template-columns:1fr 1fr;gap:8px}
+.optionBtn{height:40px;border-radius:13px;border:1.5px solid #e4e7ee;background:#f8f9fc;color:#222;font-weight:800;font-size:13px}
+.optionBtn.active{background:linear-gradient(135deg,#ff2d55,#ff5479);color:#fff;border-color:transparent;box-shadow:0 7px 14px rgba(255,45,85,.16)}
+.supportLine{display:flex;align-items:center;justify-content:space-between;gap:10px;padding:8px 0;border-top:1px solid #f0f2f7}
+.supportLine:first-of-type{border-top:none;padding-top:0}
+.supportLabel{font-size:12px;color:#848a97;font-weight:700}
+.supportValue{font-size:14px;color:#1c1f28;font-weight:900;text-align:right;word-break:break-word}
+.supportAction{display:inline-flex;align-items:center;justify-content:center;width:46px;height:38px;border-radius:13px;background:linear-gradient(135deg,#ff2d55,#ff5479);color:#fff !important;text-decoration:none;box-shadow:0 7px 14px rgba(255,45,85,.14);padding:0;flex:0 0 auto}.supportAction svg{width:20px;height:20px;display:block;fill:currentColor}
+.supportAction:active{transform:scale(.98)}
+.helpNote{font-size:11.5px;color:#7b8190;margin-top:2px}
+.bottom.auth-hidden{display:none!important}
+.accountHeader{display:flex;align-items:center;justify-content:space-between;gap:10px}
+.accountHeader h3{margin:0!important}
+.accountToggle{height:34px;padding:0 13px;border-radius:12px;background:#f1f3f7;color:#20242d;font-size:12px;font-weight:900}
+.accountData{display:none;gap:6px;margin-top:8px}
+.accountData.open{display:grid}
+.accountRow{
+  display:flex;
+  align-items:center;
+  justify-content:space-between;
+  gap:10px;
+  padding:8px 0;
+  border-top:1px solid #f0f2f7;
+}
+.accountRow:first-child{border-top:0;padding-top:0}
+.accountLabel{
+  color:#848a97;
+  font-size:12px;
+  font-weight:750;
+}
+.accountValue{
+  color:#171922;
+  font-size:13px;
+  font-weight:900;
+  text-align:right;
+  word-break:break-all;
+  max-width:62%;
+}
+.accountMini{
+  font-size:11px;
+  color:#858b98;
+  line-height:1.25;
+  margin-top:1px;
+}
+.eyeMini{
+  min-width:38px;
+  height:31px;
+  border-radius:11px;
+  background:#f1f3f7;
+  color:#20242d;
+  font-weight:900;
+}
+.deviceStatus{
+  display:inline-flex;
+  align-items:center;
+  gap:5px;
+  padding:5px 9px;
+  border-radius:999px;
+  background:#e8f8f1;
+  color:#0f8f73;
+  font-size:11px;
+  font-weight:900;
+}
+
+
+</style>
+<style id="cleanup-ui-override">
+.titleHint{display:none !important}
+.historyBody{background:linear-gradient(180deg,#f8f9fc 0%,#f1f3f8 100%) !important}
+.historyHint{display:none !important}
+.historyEmpty{background:#ffffff !important;border:1px dashed #dfe4ec !important;color:#666 !important;padding:22px 16px !important;border-radius:18px !important;box-shadow:0 6px 18px rgba(31,41,55,.04) !important}
+.historyEmpty strong{margin:0 !important;font-size:18px !important;font-weight:900 !important;color:#20222a !important}
+#balanceModal{align-items:flex-end !important}
+#balanceModal .sheet{max-width:460px !important;max-height:72dvh !important;border-radius:24px 24px 0 0 !important;overflow:hidden !important}
+#balanceModal .sheetHead{position:sticky;top:0;background:#fff;z-index:2}
+.editorBody{padding:14px 16px calc(16px + env(safe-area-inset-bottom));display:grid;gap:14px;background:linear-gradient(180deg,#ffffff 0%,#fbfbfd 100%)}
+.editorHint{display:none !important}
+.editorField{display:grid;justify-items:center;gap:12px}
+.editorCoin{width:72px;height:72px;display:grid;place-items:center;overflow:hidden;border-radius:50%;background:transparent !important;box-shadow:none !important;margin:0 auto 2px}
+.editorCoin img{width:72px;height:72px;display:block;object-fit:cover;border-radius:50%;background:transparent !important}
+.editorField input,.editorInput,#balanceInput{width:100%;height:54px;border-radius:18px;border:1.5px solid #f3b7c6;background:#fff;outline:none;padding:0 18px;font-size:19px;font-weight:800;color:#222;box-shadow:0 3px 10px rgba(0,0,0,.03) inset}
+.editorActions,.saveRow{display:grid;grid-template-columns:1fr 1.25fr;gap:10px;margin-top:2px}
+.editorActions button,.saveRow button{height:52px;border:none;border-radius:16px;font-size:17px;font-weight:900}
+.editorActions .cancel,.saveRow .cancel{background:#f3f4f6;color:#222}
+.editorActions .confirm,.saveRow .confirm{background:linear-gradient(135deg,#ff2d55,#ff456f);color:#fff;box-shadow:0 10px 18px rgba(255,45,85,.18)}
+@media (max-width:430px){
+  #balanceModal .sheet{max-height:69dvh !important}
+  .editorBody{padding:12px 14px calc(14px + env(safe-area-inset-bottom))}
+  .editorCoin{width:64px;height:64px}
+  .editorCoin img{width:64px;height:64px}
+}
+</style>
+
+<style id="hide-method-demo-override">
+.payLine > span:first-child{display:none!important}
+.payLine{justify-content:flex-end!important}
+.methodTitle > span:first-child{display:none!important}
+.methodTitle{justify-content:flex-end!important}
+</style>
+
+<style id="pwa-install-style">
+.installPrompt{
+  position:fixed;
+  left:50%;
+  bottom:calc(88px + env(safe-area-inset-bottom));
+  transform:translateX(-50%) translateY(18px);
+  width:min(340px,calc(100vw - 28px));
+  background:rgba(255,255,255,.98);
+  border:1px solid rgba(0,0,0,.07);
+  border-radius:22px;
+  box-shadow:0 18px 45px rgba(18,24,40,.16);
+  padding:12px;
+  display:flex;
+  align-items:center;
+  gap:12px;
+  z-index:500;
+  opacity:0;
+  pointer-events:none;
+  transition:.25s ease;
+  backdrop-filter:blur(12px);
+}
+.installPrompt.show{opacity:1;pointer-events:auto;transform:translateX(-50%) translateY(0)}
+.installPromptIcon{width:46px;height:46px;border-radius:14px;overflow:hidden;background:#000;box-shadow:0 8px 18px rgba(0,0,0,.12);flex:0 0 46px}
+.installPromptIcon img{width:100%;height:100%;display:block;object-fit:cover}
+.installPromptText{min-width:0;flex:1}
+.installPromptTitle{font-size:14px;font-weight:950;color:#111;line-height:1.15}
+.installPromptSub{font-size:12px;font-weight:700;color:#747a86;line-height:1.25;margin-top:3px}
+.installPromptBtns{display:flex;align-items:center;gap:7px}
+.installPromptInstall{height:37px;padding:0 13px;border-radius:12px;background:linear-gradient(135deg,#ff2d55,#ff5479);color:#fff;font-size:13px;font-weight:950;box-shadow:0 8px 18px rgba(255,45,85,.18)}
+.installPromptClose{width:34px;height:34px;border-radius:50%;background:#f2f3f6;color:#111;font-size:18px;font-weight:950}
+.iosInstallBox{
+  position:fixed;
+  inset:0;
+  display:none;
+  align-items:flex-end;
+  justify-content:center;
+  background:rgba(0,0,0,.34);
+  z-index:520;
+}
+.iosInstallBox.show{display:flex}
+.iosInstallCard{
+  width:min(420px,100%);
+  background:#fff;
+  border-radius:22px 22px 0 0;
+  padding:18px 18px calc(20px + env(safe-area-inset-bottom));
+  box-shadow:0 -14px 38px rgba(0,0,0,.18);
+}
+.iosInstallCard h3{margin:0 0 8px;font-size:20px;font-weight:950;color:#111}
+.iosInstallCard p{margin:0 0 12px;font-size:14px;color:#6f7582;line-height:1.38}
+.iosInstallSteps{display:grid;gap:8px;margin:10px 0 14px}
+.iosInstallSteps div{background:#f5f6f9;border-radius:14px;padding:10px 12px;font-size:14px;font-weight:800;color:#1b1e27}
+.iosInstallOk{width:100%;height:46px;border-radius:14px;background:linear-gradient(135deg,#ff2d55,#ff5479);color:#fff;font-weight:950;font-size:15px}
+@media(max-width:430px){.installPrompt{bottom:calc(82px + env(safe-area-inset-bottom));width:calc(100vw - 22px)}}
+</style>
+
+</head>
+<body>
+
+<div class="loginLoading" id="loginLoading">
+  <div class="loadingWrap">
+    <div class="loadingLogoShell">
+      <span class="loadingGlow" aria-hidden="true"></span>
+      <div class="loadingLogo"><img src="data:image/jpeg;base64,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" alt="TikTok"></div>
+    </div>
+    <div class="loadingText">Validando acceso...</div>
+    <div class="loadingSub">Cargando tu acceso de forma segura</div>
+    <div class="loadingDots" aria-hidden="true"><span></span><span></span><span></span></div>
+  </div>
+</div>
+<section class="loginScreen" id="loginScreen" style="display:none">
+  <div class="loginCard">
+    <div class="loginBrand">
+      <div class="loginLogo"><img src="data:image/jpeg;base64,/9j/4AAQSkZJRgABAQAAAQABAAD/2wBDAAcFBQYFBAcGBgYIBwcICxILCwoKCxYPEA0SGhYbGhkWGRgcICgiHB4mHhgZIzAkJiorLS4tGyIyNTEsNSgsLSz/2wBDAQcICAsJCxULCxUsHRkdLCwsLCwsLCwsLCwsLCwsLCwsLCwsLCwsLCwsLCwsLCwsLCwsLCwsLCwsLCwsLCwsLCz/wAARCACAAIADASIAAhEBAxEB/8QAHQABAAMAAgMBAAAAAAAAAAAAAAYHCAQFAgMJAf/EAD8QAAEDAwEEBgYHBgcAAAAAAAEAAgMEBREGBxIhMRMiQVFhgRQ2cXOxwQgjMjR0kaEVQlKS0eEXMzV1grLw/8QAGwEBAAIDAQEAAAAAAAAAAAAAAAIGAwQFBwH/xAAzEQABAwIDAwoFBQAAAAAAAAABAAIDBBEFITESQVEGEyJhcXKBkcHwMnOhsdEUIzNi4f/aAAwDAQACEQMRAD8AzaiIiIiIiIiIiIiIiIiIiIiIiIiIiIiIiIiIiIiIiIiIiIiIiLQ2zLQdk1Fo+0mSy0NRWTxvc6SVvF2HO5n2BTn/AAQtePV20rg7BfV2we5l+L1eK6UsxiDWtaNBuVKoMObXunklkeCJHDJxAsFhrahoKs0rqm6HoKeCjZK0xsidya4AjA7lAlsTb3oeW/6XnudDEZJ4Yt2VrRxLQd5rvI8D4HwWOyC0kEYIXN2iSSVfpYIooYjCSRs2N8ztDI+h8URERayIiIiIiIiIiIiIiIiIiIi1jsF9XbB7mX4vV4qjtgvq7p/3MvxerwW5Vas7oVdwH4aj5r/RCA5pa4Ag8CCs67Vvo7Nq66e+aSeyDpSXzULwdwO7XMI5A93IeAWigQeRyi1AQDmF35A5zC1jrH3uWAbjs/1Ra2yPqLNUGOMFzpIwJGgDiTlueCji39qvTlrrtPXR8tK1rzSy5dGdwnqHuWI9YWSkslbTR0nSbsse+d92eOcKUhjuAy/ipUVLWvgknn2dlpAuL7+o/kqOoiKC+oiIiIiKQ6L0lU6vvzaOMmKnjG/UTYzuM8PE8h/ZSa0vIa3VYZ5mU8bpZTZozK4un9L3bU9aaa2UrpS37ch6rIx3udyHxVqWfYdQxxtfd7lNPL2x0wDG+zeIJP5BWxpHR0UdLHbLTTtpaOD7T8cvEn95xVmWywUFrYOiiD5e2V4y4/08l0THDTCz+k5U+OqxLGXF1Keah47z76rdpVDU+wiw1EY6OyV7gf3zM8f2VBai09W2O51TJqOWCnZUPijL+PJxwM9+AvoQsZ7Xh/m/7jJ8XLRmmDyAGgdiumC4KY4J5pZ3vLQCLnLX3vVubBfV2we5l+L1eHYqP2Dertg9zL8Xq8OxZqrVndCr+A/DUfNf6LP2rtol02f6uvFbTSvlpfTt2Snd1mHPM47D7MKX6Y28aevtM108ckEmOsYvrAPaODh+RVQbcvv18/HhUlFNJBIJIpHRvHJzTgjzWg2+5elYpJBHJG2WO4LGm4yOnHQ+IK3bdNe6YrbBXRQXeAyS08jWscHNJJaQBghZB2j/AOpUXuD/ANl1lLrW+0rQ30zpmjslaHfrzXBvN8q75PHLV9HvRt3RuNxwzlLHauVgkqqJlFJT0+1dxB6Vt3YuuREWRV5ERERFpXZNpU27SlDCyMem3MieQnn1vsg+Abx8ys3U0fTVUUXLfeG/mcLb+gqFguD3hvUpYgxg7s8B+gK36QhgfLwH3VT5QtdVSU9ADYSOuexvv6KaW63w2yhjpoR1Wjie1x7SVFdabRKbTMvoNJE2ruOMlpOGRA8t7x8FMKmcU1JNORkRMc8j2DKyHrjVNRR0s1cX79dXSOLXHjgniXeX9FzpHuJ6yvR8Dw+m2HzTi0UQGQ38B76lO7jtqvVvm3qu8UdNniIuhaeHs4lVDr/UNDfreyWmq455n1Rle1oIIyDk4PZkqCSzSTyulle6SR5y5zjkkrwUQzeSstRjLXxvhghaxrhbIZ+f+LWOwb1d0/7mX4vV4Kj9g3q7p/3MvxerwK6FVqzuhee4D8NR81/osnbcvv18/HhUerw25ffr5+PCo9aDNCvQMc/li7jfsiIimuCiIiIiIiIvOKQxTMkbzYQ4eS3Ns0q4663zVMRBbPHFK0jucCfmsLLTX0bdaxVVOLDUygVNOwxsBP2o85afI5b5hbMTug9nH0XFxCK1TT1W5hIPY4Wv5281oWWNs0L4njLXtLSPA8FirbPZKuw3+ChqGODYTI1rscHDILXD2jC2wontA2d2XaHZDQ3SEtmj60FTGcSRO8D2jvBWra5CssVWYYJYbXDwPMG4/CwSvdR0k9fWw0lLE6WeZwYxjRkuJ5BXRcvo6zW6tLJbxLFFngXUucjwcHYKl2i9mlt07NvW2mmra9w3TUSDLgO5oHBo/wDZW9HRvdm7Icbqm1nKSmgBZEC6Tc2xGfXcD6KX7LbObMbXbmkP9Cpi17hyJxxP8xVrLo9NWH9j0zpJsGplHWxyaO5cTX+o26e0xMWPArKoGGAduSOLvIcfbhQq5GufdugFl0OTOG1IhbFIP3JHEkcCfdzwWatsNayvZdapp6k9flniN44/QKmlPtpFwaI6S3Ndk5Mzxnl2N+agK0Y9Fd+UDmfrObZowBvkiIiyKvoiIiIiIiIufY73X6evNPdLbOYKqncHMcOXsI7QVwEX0G2YUXNDwWuFwVuTZftWtG0WysLJGUt3haBU0bncQf4mfxNP6cip6vnRbrlWWivjraGofT1ERy17DghXhpL6SF3poWU91ljlc0Y3qhhc0/8AIdYeeVEmy3aenZMNlrwHf2yB8fzbtWpyARggEL8axrBhoDR4DCpum28GqhDoqGhmJHNlUSPywutu+2O8zwkMqKG2R44uYQXfzOPyUecC6sfJ2sebnZA47Qt9Lq39RaotumaIz10w6Qj6uBvGSQ+A+Z4LPOt9ayV8895usgYxg3YYWng0djG95PafNRS/bRKJs0kxqZLpWP5u3iQT4vPyVcXi91t8q+mq5OA4MjbwaweA+ahYv10XSbNR4Kw8y4STHfuHvzPUvTdLjNdblNWTnrynOByaOwD2BcREWZU973SOL3G5KIiIooiIiIiIiIiIiIiIiImUREREREREREREREREREX/2Q==" alt="Logo"></div>
+      <div>
+        <h1 class="loginTitle">Monedas disponibles</h1>
+        <p class="loginSub">Ingresa con tu cuenta autorizada</p>
+      </div>
+    </div>
+
+    <div class="loginField">
+      <label for="loginEmail">Correo</label>
+      <div class="loginInputWrap">
+        <svg viewBox="0 0 24 24" fill="none"><path d="M4 6.5h16v11H4v-11Z" stroke-width="2"/><path d="m4.5 7 7.5 6 7.5-6" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg>
+        <input id="loginEmail" type="email" autocomplete="email" placeholder="correo@gmail.com">
+      </div>
+    </div>
+
+    <div class="loginField">
+      <label for="loginPassword">Contraseña</label>
+      <div class="loginInputWrap">
+        <svg viewBox="0 0 24 24" fill="none"><path d="M7 10V8a5 5 0 0 1 10 0v2" stroke-width="2" stroke-linecap="round"/><path d="M6 10h12v10H6V10Z" stroke-width="2"/><path d="M12 14v2" stroke-width="2" stroke-linecap="round"/></svg>
+        <input id="loginPassword" type="password" autocomplete="current-password" placeholder="Tu contraseña">
+      </div>
+    </div>
+
+    <button class="loginBtn" id="loginButton">Ingresar</button>
+    <div class="loginError" id="loginError"></div>
+  </div>
+</section>
+
+<main class="app auth-hidden" id="mainApp">
+  <header class="top">
+    <div class="logo"><img src="data:image/jpeg;base64,/9j/4AAQSkZJRgABAQAAAQABAAD/2wBDAAcFBQYFBAcGBgYIBwcICxILCwoKCxYPEA0SGhYbGhkWGRgcICgiHB4mHhgZIzAkJiorLS4tGyIyNTEsNSgsLSz/2wBDAQcICAsJCxULCxUsHRkdLCwsLCwsLCwsLCwsLCwsLCwsLCwsLCwsLCwsLCwsLCwsLCwsLCwsLCwsLCwsLCwsLCz/wAARCACAAIADASIAAhEBAxEB/8QAHQABAAMAAgMBAAAAAAAAAAAAAAYHCAQFAgMJAf/EAD8QAAEDAwEEBgYHBgcAAAAAAAEAAgMEBREGBxIhMRMiQVFhgRQ2cXOxwQgjMjR0kaEVQlKS0eEXMzV1grLw/8QAGwEBAAIDAQEAAAAAAAAAAAAAAAIGAwQFBwH/xAAzEQABAwIDAwoFBQAAAAAAAAABAAIDBBEFITESQVEGEyJhcXKBkcHwMnOhsdEUIzNi4f/aAAwDAQACEQMRAD8AzaiIiIiIiIiIiIiIiIiIiIiIiIiIiIiIiIiIiIiIiIiIiIiIiLQ2zLQdk1Fo+0mSy0NRWTxvc6SVvF2HO5n2BTn/AAQtePV20rg7BfV2we5l+L1eK6UsxiDWtaNBuVKoMObXunklkeCJHDJxAsFhrahoKs0rqm6HoKeCjZK0xsidya4AjA7lAlsTb3oeW/6XnudDEZJ4Yt2VrRxLQd5rvI8D4HwWOyC0kEYIXN2iSSVfpYIooYjCSRs2N8ztDI+h8URERayIiIiIiIiIiIiIiIiIiIi1jsF9XbB7mX4vV4qjtgvq7p/3MvxerwW5Vas7oVdwH4aj5r/RCA5pa4Ag8CCs67Vvo7Nq66e+aSeyDpSXzULwdwO7XMI5A93IeAWigQeRyi1AQDmF35A5zC1jrH3uWAbjs/1Ra2yPqLNUGOMFzpIwJGgDiTlueCji39qvTlrrtPXR8tK1rzSy5dGdwnqHuWI9YWSkslbTR0nSbsse+d92eOcKUhjuAy/ipUVLWvgknn2dlpAuL7+o/kqOoiKC+oiIiIiKQ6L0lU6vvzaOMmKnjG/UTYzuM8PE8h/ZSa0vIa3VYZ5mU8bpZTZozK4un9L3bU9aaa2UrpS37ch6rIx3udyHxVqWfYdQxxtfd7lNPL2x0wDG+zeIJP5BWxpHR0UdLHbLTTtpaOD7T8cvEn95xVmWywUFrYOiiD5e2V4y4/08l0THDTCz+k5U+OqxLGXF1Keah47z76rdpVDU+wiw1EY6OyV7gf3zM8f2VBai09W2O51TJqOWCnZUPijL+PJxwM9+AvoQsZ7Xh/m/7jJ8XLRmmDyAGgdiumC4KY4J5pZ3vLQCLnLX3vVubBfV2we5l+L1eHYqP2Dertg9zL8Xq8OxZqrVndCr+A/DUfNf6LP2rtol02f6uvFbTSvlpfTt2Snd1mHPM47D7MKX6Y28aevtM108ckEmOsYvrAPaODh+RVQbcvv18/HhUlFNJBIJIpHRvHJzTgjzWg2+5elYpJBHJG2WO4LGm4yOnHQ+IK3bdNe6YrbBXRQXeAyS08jWscHNJJaQBghZB2j/AOpUXuD/ANl1lLrW+0rQ30zpmjslaHfrzXBvN8q75PHLV9HvRt3RuNxwzlLHauVgkqqJlFJT0+1dxB6Vt3YuuREWRV5ERERFpXZNpU27SlDCyMem3MieQnn1vsg+Abx8ys3U0fTVUUXLfeG/mcLb+gqFguD3hvUpYgxg7s8B+gK36QhgfLwH3VT5QtdVSU9ADYSOuexvv6KaW63w2yhjpoR1Wjie1x7SVFdabRKbTMvoNJE2ruOMlpOGRA8t7x8FMKmcU1JNORkRMc8j2DKyHrjVNRR0s1cX79dXSOLXHjgniXeX9FzpHuJ6yvR8Dw+m2HzTi0UQGQ38B76lO7jtqvVvm3qu8UdNniIuhaeHs4lVDr/UNDfreyWmq455n1Rle1oIIyDk4PZkqCSzSTyulle6SR5y5zjkkrwUQzeSstRjLXxvhghaxrhbIZ+f+LWOwb1d0/7mX4vV4Kj9g3q7p/3MvxerwK6FVqzuhee4D8NR81/osnbcvv18/HhUerw25ffr5+PCo9aDNCvQMc/li7jfsiIimuCiIiIiIiIvOKQxTMkbzYQ4eS3Ns0q4663zVMRBbPHFK0jucCfmsLLTX0bdaxVVOLDUygVNOwxsBP2o85afI5b5hbMTug9nH0XFxCK1TT1W5hIPY4Wv5281oWWNs0L4njLXtLSPA8FirbPZKuw3+ChqGODYTI1rscHDILXD2jC2wontA2d2XaHZDQ3SEtmj60FTGcSRO8D2jvBWra5CssVWYYJYbXDwPMG4/CwSvdR0k9fWw0lLE6WeZwYxjRkuJ5BXRcvo6zW6tLJbxLFFngXUucjwcHYKl2i9mlt07NvW2mmra9w3TUSDLgO5oHBo/wDZW9HRvdm7Icbqm1nKSmgBZEC6Tc2xGfXcD6KX7LbObMbXbmkP9Cpi17hyJxxP8xVrLo9NWH9j0zpJsGplHWxyaO5cTX+o26e0xMWPArKoGGAduSOLvIcfbhQq5GufdugFl0OTOG1IhbFIP3JHEkcCfdzwWatsNayvZdapp6k9flniN44/QKmlPtpFwaI6S3Ndk5Mzxnl2N+agK0Y9Fd+UDmfrObZowBvkiIiyKvoiIiIiIiIufY73X6evNPdLbOYKqncHMcOXsI7QVwEX0G2YUXNDwWuFwVuTZftWtG0WysLJGUt3haBU0bncQf4mfxNP6cip6vnRbrlWWivjraGofT1ERy17DghXhpL6SF3poWU91ljlc0Y3qhhc0/8AIdYeeVEmy3aenZMNlrwHf2yB8fzbtWpyARggEL8axrBhoDR4DCpum28GqhDoqGhmJHNlUSPywutu+2O8zwkMqKG2R44uYQXfzOPyUecC6sfJ2sebnZA47Qt9Lq39RaotumaIz10w6Qj6uBvGSQ+A+Z4LPOt9ayV8895usgYxg3YYWng0djG95PafNRS/bRKJs0kxqZLpWP5u3iQT4vPyVcXi91t8q+mq5OA4MjbwaweA+ahYv10XSbNR4Kw8y4STHfuHvzPUvTdLjNdblNWTnrynOByaOwD2BcREWZU973SOL3G5KIiIooiIiIiIiIiIiIiIiImUREREREREREREREREREX/2Q==" alt="TikTok"></div>
+    <h1 id="availableCoinsTitle" class="title"><span class="titleLabel">Monedas disponibles</span><span class="titleBalance"><span class="tiktokCoin"><img src="data:image/jpeg;base64,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" alt="Moneda"></span><span id="availableCoinsValue">71818K</span></span><span class="titleHint"></span></h1>
+    <button class="icon" id="historyBtn">▤</button>
+    <button class="icon" id="helpBtn">?</button>
+  </header>
+
+  <section class="card profile">
+    <div class="safe">🛡️ Pago seguro</div>
+
+    <div class="profileRow">
+      <div class="avatarFrame">
+        <div class="avatarInner" id="avatarInner">
+          <div class="fallback" id="fallback">?</div>
+          <img id="avatar" referrerpolicy="no-referrer" alt="Foto de perfil">
+        </div>
+      </div>
+      <div class="info">
+        <p class="name" id="profileName">Busca un perfil</p>
+        <div class="meta"><span id="profileUser">Ingresa un usuario para mostrar su foto</span></div>
+      </div>
+      <button class="reload" id="clearBtn">↻</button>
+    </div>
+
+    <div class="searchBox">
+      <h2 class="searchTitle">Buscar perfil</h2>
+      <div class="searchRow">
+        <div class="inputWrap">
+          <span class="searchIcon" aria-hidden="true"><svg viewBox="0 0 24 24" fill="none"><circle cx="11" cy="11" r="7" stroke-width="2.2"></circle><path d="M20 20L16.6 16.6" stroke-width="2.2" stroke-linecap="round"></path></svg></span>
+          <input id="usernameInput" placeholder="Ej: beebootee" autocomplete="off">
+        </div>
+        <button class="primary" id="searchBtn">Buscar</button>
+      </div>
+      <div class="status" id="status"></div>
+    </div>
+
+    <button class="reward" id="rewardBtn">
+      <div class="rewardIcon">👏</div>
+      <div class="rewardText">Invita y consigue recompensas</div>
+      <div class="chev">›</div>
+    </button>
+  </section>
+
+  <section class="card recharge">
+    <div class="rechargeHead">Recarga</div>
+    <div class="rechargeBody">
+      <div class="save">Ahorra un 25 % con una tarifa de servicio de terceros más baja. <span class="infoDot" id="infoDot">i</span></div>
+      <div class="grid" id="coinGrid"></div>
+    </div>
+  </section>
+</main>
+
+<footer class="bottom auth-hidden" id="bottomBar">
+  <div class="bottomInner">
+    <div class="payLine">
+      <span class="methodHiddenText"></span>
+      <div class="icons">
+        <span class="payIcon"><span class="visaTextLogo">VISA</span></span>
+        <span class="payIcon">MC</span>
+        <span class="payIcon">AMEX</span>
+        <span class="payIcon"><img src="data:image/jpeg;base64,/9j/4AAQSkZJRgABAQAAAQABAAD/2wBDAAcFBQYFBAcGBgYIBwcICxILCwoKCxYPEA0SGhYbGhkWGRgcICgiHB4mHhgZIzAkJiorLS4tGyIyNTEsNSgsLSz/2wBDAQcICAsJCxULCxUsHRkdLCwsLCwsLCwsLCwsLCwsLCwsLCwsLCwsLCwsLCwsLCwsLCwsLCwsLCwsLCwsLCwsLCz/wAARCACAAIADASIAAhEBAxEB/8QAHAABAAEFAQEAAAAAAAAAAAAAAAEDBQYHCAIE/8QAQRAAAQMCAgYECAsJAAAAAAAAAAECAwQRBQYHEiExQXETFFGBCCJhkZKxwdEVFzJSU1VigpShshgjJDVCQ2STwv/EABsBAQACAwEBAAAAAAAAAAAAAAAEBQEDBgIH/8QAJhEAAgICAgEEAQUAAAAAAAAAAAECAwQREjEhEyJBUQUUMmGh4f/aAAwDAQACEQMRAD8A1CAD6Kc0AAAAAASCAASCCQAAACAAAAAAAAAAAADJcP0fZlxTD4K6kw9H087deNyzMbdO2yrcxpdy8jp/A6RKDL+H0iJboKaNi80al/zIeVfKlLj8m+qCnvZo74rs3fVjfxEfvHxXZu+rG/iI/edAEkD9fb9I3+hE5+XRfm5E/lbfxEfvLVimUcfwaNZK/CamGJN8iN12J95t0OlhbYvlMrPs+UjDoj8HKANyaQdHFPU0c2L4LTthqokV81PGlmzN4q1ODuOzfzNOXLOm6N0dojTg4PTBBIN5rIBJABJAAABJAB9mE0vXsaoaREv09RHHbm5EOoVtdbbr7DnnRzSdb0g4U210jkWZfutVfXY6GsU+fL3pE3HXhsXsVUp51/syeip5jZrysb2uRDJipnPiS4R5GOdWn+hk9FR1af6GT0VMjBr9Z/R79NGNOjkZtdG5vNDm3O+Fx4PnXE6OFqNhSXpI2puRrkRyJ3XsdbLtSxgmkHQ/R5upX4rhjuq40jOK/up0Tc1yf0rbYip3kzEzI1T9/hM03UOUfaczAq1VLPRVk1LUxPhnhesckb0s5jkWyopSOlT35RV9AAKZMEAAAAEgGwNDdL0ubqmpVNlPSO7lc5E9Vzdpq3QpSWpMXrFT5UkcKLyRXL60NolBmPdrLClagj6aBuvXxJ2LfzGQFlwlt6xzvmtX8y9FXb+4mV9AC57jgklXxW2TtXcaW9dm0iONZZEYnHf5C6oiI1ETcmwpwQNhbZNqrvUqEacuTPaWjnHwhsuxYfmmhxqBiMbicSsmtxkjsl+9qp6JqA394SdRGmHYBTXTpXTTSW42RrU9aoaBOx/GycsaLZS5SStegSCCxIpIAAIJCjcAb10S0nV8iMltZamokk5oio1P0mbljyXSdRyPg8CpZUpmvdzd4y+svhzVsuU2/wCSzitJIyDLELXNqJHNRdrWpdO8v3Rs+Y3zFsy5HqYVrfPe5fZ7C6lLdLc2T61qKIRjEXY1qdxIBpPYBTnqIaWnfPUSxwwsTWdJI5GtanaqrsQ0RpU00w1lHNgOVp1fHKisqK9uxFbxZHz4u83aScfGsyJcYL/DXZZGtbkYRpgzbHmzPs76WRJKGgb1WBybn2W73JzdfuRDBSNxJ29VSqgoR6RQzm5ycmAAbTwAAAD1HE6eZkLNrpHIxOarb2nkq01Q+kq4aiPV6SF7ZG6yXS6LdLpx3GH14Mo6jhhbT08cDfkxMRidyW9h72Gh10sZrVb9Zpdv+M0qQ6Uc3VNRHBHU0qvlekbf4Vu9VsnrKR4Vvb0TVdE6qwqPosKpmfYRV79p9hThYscDGKt1a1GqvbZD2cvJ7bZbJaWjn7S3pLzPgWkOpwvBsXfSU1NDEjmNjY7x1brKt3Iq7lQwh2l/PrkVFzFMiL2QxJ/yW/SLXJiWknH6lHazVrHsavkYuon6TGztMbEqVUeUFvS+CktunzemXPGMy45mByLi2LVlcibUbNKqtTk3cnmLYAToxUVqK0R3Jt7Y4gA9GAAAAAAAAAAZHo9oPhPSPgFKrdZrqyN7k+y1ddfyaY4XzJ+ZpMoZnp8bhpIquWna9GRyuVrbuarb3TyKppuUnXJR70z3W0pJvo7QKVVOykpJqiT5ELHSO5Il/Yc/ftIYz9QUH+9/uPkxbwgcYxTBq3D1wWigSrgfAsjZnqrNZqpdEtv2nKL8Vk78x/tFw8qr7NUTzuq6qWoet3zPdIq+VyqvtKY3JYHYJa8FI3tgAGTAAHEGQAAAAgAAAAAAAAAAAAAAAAAAAAAAP//Z" alt="PayPal"></span>
+      </div>
+    </div>
+    <button class="buy" id="buyBtn">♪ Comprar por USD0.31</button>
+  </div>
+</footer>
+
+<section class="modal" id="orderModal">
+  <div class="sheet">
+    <div class="sheetHead">
+      <button class="back" id="closeOrder">‹</button>
+      <div class="sheetTitle">Resumen del pedido</div>
+      <button class="help" id="helpOrder">?</button>
+    </div>
+    <div class="sheetSafe">🛡️ Pago seguro</div>
+    <div class="block">
+      <div class="orderRow">
+        <span>Cuenta</span>
+        <div class="orderUser">
+          <img id="orderAvatar" referrerpolicy="no-referrer" alt="">
+          <span id="orderUser">usuario</span>
+        </div>
+      </div>
+      <div class="orderRow">
+        <span id="orderCoins">Compra de 30 Monedas</span>
+        <b id="orderPrice">USD0.31</b>
+      </div>
+    </div>
+    <div class="methods">
+      <div class="methodTitle">
+        <span class="methodHiddenText"></span>
+        <button id="moreBtn" style="background:transparent;color:#777;font-weight:850">Ver más ›</button>
+      </div>
+      <button class="method active">
+        <div class="methodLogo"><img src="data:image/jpeg;base64,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" alt="PayPal"></div>
+        <div class="methodText">isa******ero@hotmail.com</div>
+        <div class="radio"></div>
+      </button>
+      <button class="method">
+        <div class="methodLogo plainLogo"><span class="visaTextLogo">VISA</span></div>
+        <div class="methodText">**** 6849</div>
+        <div class="radio"></div>
+      </button>
+      <button class="method">
+        <div class="methodLogo plainLogo"><span class="visaTextLogo">VISA</span></div>
+        <div class="methodText">**** 5550</div>
+        <div class="radio"></div>
+      </button>
+    </div>
+    <div class="terms"></div>
+    <div class="total">
+      <span>Total</span>
+      <span id="totalPrice">USD0.31</span>
+    </div>
+    <div class="cta">
+      <button class="confirm" id="confirmBtn">Confirmar demo</button>
+    </div>
+  </div>
+</section>
+
+
+<section class="modal" id="helpModal">
+  <div class="sheet helpScreen">
+    <div class="sheetHead">
+      <button class="back" id="closeHelp">‹</button>
+      <div class="sheetTitle" id="helpScreenTitle">Ayuda y ajustes</div>
+      <button class="back" id="xHelp">×</button>
+    </div>
+    <div class="helpBody">
+      <div class="helpCard">
+        <h3 id="helpLanguageTitle">Idioma</h3>
+        <div class="optionRow">
+          <button class="optionBtn" id="langEs">Español</button>
+          <button class="optionBtn" id="langEn">English</button>
+        </div>
+      </div>
+
+      <div class="helpCard">
+        <h3 id="helpCurrencyTitle">Moneda</h3>
+        <div class="optionRow">
+          <button class="optionBtn" id="currencyUsd">USD</button>
+          <button class="optionBtn" id="currencyPen">Soles</button>
+        </div>
+        <p class="helpNote" id="helpCurrencyNote">Puedes cambiar entre dólares y soles en toda la interfaz.</p>
+      </div>
+
+      <div class="helpCard" id="accountCard">
+        <div class="accountHeader">
+          <h3>Datos de cuenta</h3>
+          <button class="accountToggle" id="toggleAccountData" type="button">Ver datos</button>
+        </div>
+        <div class="accountData" id="accountDataPanel">
+          <div class="accountRow">
+            <div class="accountLabel">Correo</div>
+            <div class="accountValue" id="accountEmail">—</div>
+          </div>
+          <div class="accountRow">
+            <div>
+              <div class="accountLabel">Contraseña</div>
+              <div class="accountMini">Solo se muestra en este dispositivo.</div>
+            </div>
+            <div style="display:flex;align-items:center;gap:8px;justify-content:flex-end;max-width:68%">
+              <div class="accountValue" id="accountPassword">••••••••</div>
+              <button class="eyeMini" id="toggleAccountPassword" type="button">👁</button>
+            </div>
+          </div>
+          <div class="accountRow">
+            <div class="accountLabel">Dispositivo</div>
+            <div class="accountValue" id="accountDevice">—</div>
+          </div>
+          <div class="accountRow">
+            <div class="accountLabel">Estado</div>
+            <div class="deviceStatus" id="accountDeviceStatus">Vinculado</div>
+          </div>
+          <button class="resetDeviceBtn" id="resetDeviceButton" type="button">Resetear ID del dispositivo</button>
+        </div>
+      </div>
+
+      <div class="helpCard">
+        <h3 id="helpOwnerTitle">Soporte y contacto</h3>
+        <div class="supportLine">
+          <div class="supportLabel" id="ownerLabel">Dueño</div>
+          <div class="supportValue">Sonyer</div>
+        </div>
+        <div class="supportLine">
+          <div class="supportLabel">Telegram</div>
+          <a class="supportAction" href="https://t.me/Bebootee" target="_blank" rel="noopener" aria-label="Telegram">
+            <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M21.5 4.5 18.4 19c-.2 1-.8 1.3-1.6.8l-4.5-3.3-2.2 2.1c-.2.2-.4.4-.8.4l.3-4.7 8.6-7.8c.4-.3-.1-.5-.5-.3L7.1 13 2.6 11.6c-1-.3-1-.9.2-1.4L20 3.6c.9-.3 1.7.2 1.5.9Z"/></svg>
+          </a>
+        </div>
+        <div class="supportLine">
+          <div class="supportLabel">WhatsApp</div>
+          <a class="supportAction" href="https://wa.me/51942978154" target="_blank" rel="noopener" aria-label="WhatsApp">
+            <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M20 11.8c0 4.8-3.9 8.7-8.8 8.7-1.5 0-2.9-.4-4.1-1l-4.1 1.1 1.1-4c-.7-1.3-1.1-2.8-1.1-4.3 0-4.8 3.9-8.7 8.8-8.7s8.8 3.9 8.8 8.7Zm-8.8-7.3c-4 0-7.2 3.2-7.2 7.2 0 1.4.4 2.7 1.1 3.8l.2.3-.6 2.3 2.4-.6.2.1c1.1.7 2.4 1 3.8 1 4 0 7.2-3.2 7.2-7.2s-3.2-6.9-7.1-6.9Zm4.3 9c-.2-.1-1.2-.6-1.4-.7-.2-.1-.3-.1-.5.1-.1.2-.6.7-.7.8-.1.1-.3.2-.5.1-1.3-.6-2.1-1.2-2.9-2.7-.2-.3 0-.4.1-.6.1-.1.2-.3.4-.4.1-.1.1-.2.2-.4 0-.1 0-.3 0-.4-.1-.1-.5-1.2-.7-1.7-.2-.4-.4-.4-.5-.4h-.4c-.1 0-.4.1-.6.3-.2.2-.8.8-.8 1.9s.8 2.2.9 2.3c.1.1 1.6 2.4 3.8 3.4.5.2.9.4 1.2.5.5.1.9.1 1.3.1.4-.1 1.2-.5 1.4-1 .2-.5.2-.9.1-1 0-.1-.2-.2-.4-.3Z"/></svg>
+          </a>
+        </div>
+        <button class="logoutBtn" id="logoutButton">Cerrar sesión</button>
+      </div>
+    </div>
+  </div>
+</section>
+
+<section class="modal" id="customModal">
+  <div class="sheet">
+    <div class="sheetHead">
+      <button class="back" id="closeCustom">‹</button>
+      <div class="sheetTitle">Personalizar</div>
+      <button class="back" id="xCustom">×</button>
+    </div>
+    <div style="padding:18px">
+      <input id="customInput" type="number" min="1" inputmode="numeric" placeholder="Ej: 500" style="padding-left:14px;margin-bottom:12px">
+      <button class="confirm" id="saveCustom">Guardar cantidad</button>
+    </div>
+  </div>
+</section>
+
+<section class="modal" id="balanceModal">
+  <div class="sheet">
+    <div class="sheetHead">
+      <button class="back" id="closeBalance">‹</button>
+      <div class="sheetTitle">Editar monedas</div>
+      <button class="back" id="xBalance">×</button>
+    </div>
+    <div class="editorBody">
+      <p class="editorHint"></p>
+      <div class="editorField">
+        <span class="editorCoin"><img src="data:image/jpeg;base64,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" alt="Moneda"></span>
+        <input id="balanceInput" class="editorInput" type="text" placeholder="71818K" maxlength="12" autocomplete="off">
+      </div>
+      <div class="editorActions">
+        <button class="secondaryBtn" id="cancelBalance">Cancelar</button>
+        <button class="confirm" id="saveBalance">Guardar</button>
+      </div>
+    </div>
+  </div>
+</section>
+
+<section class="modal fullscreenModal" id="historyModal">
+  <div class="sheet historySheet">
+    <div class="sheetHead">
+      <button class="back" id="closeHistory">‹</button>
+      <div class="sheetTitle">Historial</div>
+      <div class="sheetHeadActions">
+        <button class="clearMini" id="clearHistoryBtn">Limpiar</button>
+      </div>
+    </div>
+    <div class="historyBody">
+      <p class="historyHint"></p>
+      <div class="historyList" id="historyList"></div>
+    </div>
+  </div>
+</section>
+
+<section class="modal fullscreenModal" id="historyDetailModal">
+  <div class="sheet detailSheet">
+    <div class="sheetHead">
+      <button class="back" id="closeHistoryDetail">‹</button>
+      <div class="sheetTitle">Detalles</div>
+      <button class="clearMini" id="useHistoryDetail">Usar</button>
+    </div>
+    <div class="detailBody">
+      <div class="detailHero">
+        <div id="detailAvatarWrap"><div class="detailFallback">U</div></div>
+        <div style="min-width:0;flex:1">
+          <div class="detailName" id="detailName">Usuario</div>
+          <div class="detailUser" id="detailUser">@usuario</div>
+          <div class="detailBadge" id="detailBadge">Historial</div>
+        </div>
+      </div>
+
+      <div class="statGrid">
+        <div class="statBox">
+          <div class="statLabel">Seguidores</div>
+          <div class="statValue" id="detailFollowers">Cargando...</div>
+          <div class="statSub" id="detailFollowersSub">Leyendo datos del perfil.</div>
+        </div>
+        <div class="statBox">
+          <div class="statLabel">Llegada</div>
+          <div class="statValue" id="detailETA">—</div>
+          <div class="statSub" id="detailETASub">Sin datos aún.</div>
+        </div>
+      </div>
+
+      <div class="profileDataGrid">
+        <div class="miniStat">
+          <div class="miniLabel">Siguiendo</div>
+          <div class="miniValue" id="detailFollowing">—</div>
+          <div class="miniSub">Cuentas seguidas por el perfil.</div>
+        </div>
+        <div class="miniStat">
+          <div class="miniLabel">Me gusta</div>
+          <div class="miniValue" id="detailLikes">—</div>
+          <div class="miniSub">Likes totales del perfil.</div>
+        </div>
+        <div class="miniStat">
+          <div class="miniLabel">Videos</div>
+          <div class="miniValue" id="detailVideos">—</div>
+          <div class="miniSub">Videos públicos detectados.</div>
+        </div>
+        <div class="miniStat">
+          <div class="miniLabel">Cuenta</div>
+          <div class="miniValue" id="detailVerified">—</div>
+          <div class="miniSub" id="detailBio">Más datos reales del perfil.</div>
+        </div>
+      </div>
+
+      <div class="detailCard">
+        <h3>Resumen del registro</h3>
+        <div class="detailRow"><span>Estado</span><strong id="detailState">—</strong></div>
+        <div class="detailRow"><span>Monedas</span><strong id="detailCoins">—</strong></div>
+        <div class="detailRow"><span>Precio</span><strong id="detailPrice">—</strong></div>
+        <div class="detailRow"><span>Registrado</span><strong id="detailTime">—</strong></div>
+        <div class="detailRow"><span>Usuario</span><strong id="detailUsernameRow">—</strong></div>
+      </div>
+
+      <div class="detailActions">
+        <button class="detailBtn secondary" id="backToHistoryBtn">Volver</button>
+        <button class="detailBtn confirm" id="loadFromHistoryBtn">Cargar perfil</button>
+      </div>
+    </div>
+  </div>
+</section>
+
+<section class="success" id="successView">
+  <div class="successCard" id="successCard">
+    <div class="loader"></div>
+    <div class="check">✓</div>
+    <h2 id="successTitle">Procesando...</h2>
+    <p id="successText">Preparando confirmación de monedas...</p>
+    <div class="actions">
+      <button class="primary" id="doneBtn">Listo</button>
+      <button class="outline" id="newBtn">Nueva búsqueda</button>
+    </div>
+  </div>
+</section>
+
+<div class="toast t-info" id="toast"><div class="toastIcon" id="toastIcon">ℹ</div><div class="toastTextWrap"><div class="toastTitle" id="toastTitle">Aviso</div><div class="toastMsg" id="toastMsg"></div></div></div>
+
+<script>
+(function(){
+  const coinImage = "data:image/jpeg;base64,/9j/4AAQSkZJRgABAQAAAQABAAD/2wBDAAQDAwMDAgQDAwMEBAQFBgoGBgUFBgwICQcKDgwPDg4MDQ0PERYTDxAVEQ0NExoTFRcYGRkZDxIbHRsYHRYYGRj/2wBDAQQEBAYFBgsGBgsYEA0QGBgYGBgYGBgYGBgYGBgYGBgYGBgYGBgYGBgYGBgYGBgYGBgYGBgYGBgYGBgYGBgYGBj/wAARCABgAGADASIAAhEBAxEB/8QAHAAAAQUBAQEAAAAAAAAAAAAABwABBAUGAwII/8QAQRAAAQMDAQQHBAcDDQAAAAAAAQIDBAAFEQYSITFBEzJRYXGBkQciI6EUFUJicrHBQ1KCJCUnMzdEVGN0krLC8f/EABsBAAMBAQEBAQAAAAAAAAAAAAQGBwUDAAgC/8QANBEAAQIDAwsDAwQDAAAAAAAAAQIDAAQRBSExBhJBUWFxgaGxwfAHkdETIuEUFTLxI0JS/9oADAMBAAIRAxEAPwD7lzSzTUq9HofNKoc+5MW9pG2lbrzp2WY7Qyt1XYB+ZO4VRSkvzQVXh4KSeEFhRDKfxqG9w+ie6sK18oJezRmq+5er5OjmdNKQXLya3r8B5h5TbFo/qO1MvKYaeXMeTuLUNsvEeJTuHmahuanlAnorBIx2vyWmz6ZNQHJIbY6NsIaZQOogBKEjwG4Vl5+sNNQ3C3J1DbG1jikyEkj0zU7nMurQcJ/TgAbBXrXtG5L2Q0cU19+1I2J1dJQfjWB7H+TLaWfQ4qSxrKxrWluU89b1ncEzmi0D4L3p+dDZvWWmZbnRxtRWxxR4J+kJST/uxXaTNUGvdV7ixx4pV+hoFvL+1ZY1eSFDaKdKQb+wMOXUzTvPesGBK0rbStCkqSoZSpJyCO40+aCttvM+yyOktUkR0k5VHUCqO54o+yfvJwfGibp3VELULKm0pMac0kKeiLUCUg8FpP20HkoeBwd1UPJ7LCTtn/Gn7HP+Tp3HT12Rh2jYr0l9+KdfzF6ONKlTU2Rjwqi3Ce1bbeuU6lSyCEoaR1nFnclI7yalVmJ8v6XqJ1zOWLf8FvsLyhlav4UkJHeTWPbtqCzpRT3+xuG/8C/bhpgqTl/rOUOAvPm38wyS4wtyVLcS5PeGHXE9VtPJpHYkfM7zWL1brqPY5AtkBj6wu607SYwVhLQPBTiuQ7BxPdxrprXVC7DY9qIlLlxlL6CG0reCsjeoj91I3nyHOsdYrIiAyqVLWqRNfJcefcOVLUeJJqCWlaZNXXTUnAdz5eYebPs9Kh9RzDr+BEN+037UixI1PdHXUHeIrZLbKO4IHHxOTUlrSlmjI2UR0DwSBV2tZ7a4qVkjfupXen3nTeqGBsUFE3CKKVpe0PJ2VR0nI5pBqn+orlZFF3T1wdjDipnrtL7lNncfLBr6L0tpTTdz0Zbp0u0MOvushS1nOVHJ38aEd4tk2yXyVapycOsrOyrGA4gn3VjuIx55HKmu08n7RsaVanFrCkLphU0qKgGo09oBkbWZnXVy4FCnXS/RdFNZ7+m5yRb5zAhXMA4aBJbfxxLZO/P3Dv7M1fxnpEeSzJiyDHksK22H0jPRqPHI5pPBSeY78Gsxd7SzcI+RlDqSFIcQcKSocCDyIq109c3brbnEzMC4RVBuSAMbeeq4ByCsHPeD2isdlYqJmX+1ab7tG0QW+2M2hFUmDlpq/tahsglBsMyWldFKjg56JwDJAPNJBCknmCKuBQj03clWPVkSUtezFmFMGUDwGT8JZ8FHZ8F91Fzyr6FyWtv93kUvK/mLlb9fHGJla0j+jfKU/wATePjhHN99uLEdlO9RpCnFeCRk/lQ+YfW3ZIxdPxXEdO6e1bh21f8ALHlWt1Yso0HeVJ4/Q3BnxTj9axM1fxtkcBhIHdjFJ3qRNKQWWhhQn3P4jSsFkKSpR19P7jB3Fw3n2nSXHMqYtTSYrQ5dIoBbh8d6R5VZqcqls6tqZeJCuu5cpBPksj8hVgtz/wAFRy0VFT5Tqu9ofmWwEJGyOqngnifOuZKikKAOyeBxuot6Q0BCgQmrheo6ZM9YCuicGUMdgxzV2n0qB7R71p93TQtdvuttcmoltbUVh5BcABOcpBzup0Pp87L2aufnHQhQSVBFKm4VoTUUOwAxhpyhbcmky7CM4VoT3ww9o1GhBj2c2jP+HB+Zr3JgaW1zZWpWY1xjHPRSo696TzAUN47x6ivOiP7ObR/ph+tfOkJiXbHTLsd1nWl9ZJWYjpQFnP2k8D51R7WygYsmRlETTWe24mhG4J0G44wuyNmLnZh9TS81STdxJixuLDce+3CIyCG48t1hAUcnZSspGT4CquL/ADfreDJTual5hvd+1vQfJYT6mpaVPEqXJfXIfWorcec6y1E5Kj3kmoN2GIrLqes2+0seIWmoch1BnCpsUQomg2E4e0UDMV9LNUamnONjOimXaZEZJ2VLbISexWMg+RANFuwXI3jS1tuh60qM28ruUUja+eaG/RfylX4z+dbD2dn+jS1p4hAdQPAOrAqnemrykzL7GgpB9jTvCVlGkLZQ5pB6j8RbX+MqbpK6Q0DK3YjqE47Sg4+dDYyRKhMSk8HWkODHekGi2N2DjNCFcU224T7GvcYL5DWebK8rbPoSn+E0d6lyalNMzIwFQeN47wNk44KrbOOPY9oxrCPomorzEO7MsyEd6XQFg+pI8qubH0KtXWhEjBaXNZSrPDrDHzxUDUzBjSY98QPcSkRpWOSCcoX4BRIPcoVEWtbjOWnS26MKQtPFCgcgjwIBqShaWZxuaUKpqFHgRUQ9AF1goBoaEcvDB49pz1yZ9mVwNtdW0tZQ2662cKQ0pYCyDy3ZGeWTQJjwrfBQlUaM03sjrAb6O2ida2zWljMaR0Ld0bRsTYC8ZzjBUkHrIVyPfg766x/ZzpKNdhPbtpKkq20tKcUptJ7k/pVhynyaeylWzNyT4+nSl9ddaimJ0EGmEJVlWqmyUuS8w2c6tbuh7G/GJmkWXIXs9tbUpPRrbiJKwrds7s76+dWVhTCFJOQRkHuove0/XcS22p7S1nkIdvEtBad6M5+iNHcpSjyURkAcd+eVCJttKUJQkbkgADupZ9RptisvIMqqWga8gBvuvjWyYYcCXZlwUzzdz+Y6bjwritky7lAgpH9dKbz+FJ2j8k13xuzVnpSAqXdXbu4n4TIMeOf3lHrqHgPd8zU9k0VcCtAvhhmXMxskxqcpbS5JXgJQC4SewDNbDQ0ZUX2c2VpxJC1RUuqB7Vkr/wC1ZC6RHJNvZtDOQ/c3kw0Y+yk73FeAQFH0omttobbS00nZbQAlKewAYA9KsXp3IqSXplQuoEjqe3vCDbr4KEtjXX2u7n2h6w/tBtLqW2dUwWlOOw0FqY0gZU7GJyVAc1Nn3h3FQrcUqoVp2e1aEsuVewUPbUeEYcpMqlnUuo0eUgIPPNPMkfDfYdRjB95DiFD5gg1k5EZ2yLJ2lvWzPuPnepj7jnd2K4Hnvoiar0dIsDrtzs0Zb9mUS49FaSVLgk7ypCRvU0eJSN6eWRuGcYWl1pD7DqHG3B7q0EKSsH5EV862xZMxZD5lppNUnA6DtB6jgYpchONzDYdZO8dj5yjPux2ZLjclDi2nkb25DCyhae8KG+pjly1U/HMZ/Wd+cYIwWzKUMjsJG/51LVpyKslyC45b1neUtALaJ/AeH8JHhXj6ivSD7jtufHbtraPoQfzoFiYmmElEs8Qk6K05QYtTDhBcSKjWKxXRYLERBSwjG0cqUd5Ue0nnUtIPZU1qwXpZws29kfvdKpfyCatYek45WFXCQ7NI/ZAdG15gHKvM0MJRxaqrPOvSPLnGkDGKSBbpF6d6OOpTcNJw9KHPtS32q7+AoiWq2ttMNsMNoYjsowBnCUJHMk+pPjXSLAbbjF11TUaKynKlrwhttI+QFSokFWp20NJacj6dBCllYKHLljgMcUs/NXhTVYlhOTbiWm03ddp1D+hU0BXbQtGoKiaAecT5cKmO+l4n1lc16mcQUxg2Y9tSoYJaJ997HIrIGPugdta0caYJCUhKUgJAwABgAeFOKu9myDchLpl29GO06T5gLoSJl8vuFZ4bvOcNSpUqOjhD5xvG41jb37O7bPkuT7NINnnOHac6JAXHeV2ra3DP3klJ8a2NKhJ2Ql55oszKApO3y7hHeXmXZdWe0qhgRyLFqm1KImafXNbH94tTgeBHaW1YWPnUUXSAyrYlfSoqxxRJiOtkeqaM3GvW0rGNpWOzNI016byK1ZzDikbLiOx5xuoykdpRxAO40+YEUe7WpxQS08/IUeCY8V1wn0TV3EZvkogW7Tj7YP7e6KEdA79gZWfQUQtpWMbSvWm4V+5T09lWVVddKtwA+Y4vW6pf8UU3mvSkZyJpRLjzcrUMz60ebO03HCOjitHtS39o96ifKtHzpqVO0nIsSaPpsJoOZ3nE8Yx3phx41cNfNAhU9KlzouOMf//Z";
+  const tiktokLogo = "data:image/jpeg;base64,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";
+  const coins = [
+    {c:150,p:1.59,t:'Popular'},
+    {c:250,p:2.59},
+    {c:350,p:3.65},
+    {c:500,p:5.19},
+    {c:700,p:7.25},
+    {custom:true}
+  ];
+
+  let selected = {c:150,p:1.59};
+  let profile = {username:'', nickname:'Busca un perfil', avatar:'', loaded:false};
+  let controller = null;
+  let lastAvatar = "";
+  let avatarToken = 0;
+  let activeHistoryItem = null;
+  const HISTORY_KEY = 'tiktokDemoHistoryV2';
+  const BALANCE_KEY = 'availableCoinsBalanceV2';
+  const RECENT_KEY = 'tiktokDemoRecentCoinsV2';
+
+  const $ = id => document.getElementById(id);
+  const SETTINGS_KEY = 'tiktokDemoSettingsV1';
+  const DEFAULT_SETTINGS = { language:'es', currency:'USD' };
+  const RATE_PEN = 3.75;
+  let settings = loadSettings();
+
+  function loadSettings(){
+    try{
+      return Object.assign({}, DEFAULT_SETTINGS, JSON.parse(localStorage.getItem(SETTINGS_KEY) || '{}'));
+    }catch(e){
+      return {...DEFAULT_SETTINGS};
+    }
+  }
+
+  function saveSettings(){
+    localStorage.setItem(SETTINGS_KEY, JSON.stringify(settings));
+  }
+
+  function money(n){
+    const value = Number(n) || 0;
+    if(settings.currency === 'PEN') return 'S/' + (value * RATE_PEN).toFixed(2);
+    return 'USD' + value.toFixed(2);
+  }
+
+
+  function getTexts(){
+    return settings.language === 'en' ? {
+      title:'Available coins',
+      defaultName:'Search a profile',
+      defaultMeta:'Enter a username to show the profile photo',
+      searchTitle:'Search profile',
+      searchBtn:'Search',
+      searchPh:'Ex: beebootee',
+      reward:'Invite friends and earn rewards',
+      recharge:'Recharge',
+      save:'Save 25% with a lower third-party service fee.',
+      method:'',
+      buy:'♪ Buy for ',
+      orderTitle:'Order summary',
+      account:'Account',
+      orderCoins:'Purchase of ',
+      more:'See more ›',
+      confirm:'Confirm demo',
+      total:'Total',
+      helpTitle:'Help & settings',
+      helpLang:'Language',
+      helpCurrency:'Currency',
+      helpCurrencyNote:'You can switch between dollars and soles throughout the interface.',
+      helpOwner:'Support and contact',
+      owner:'Owner',
+      historyTitle:'History',
+      clear:'Clear',
+      historyEmpty:'No history yet',
+      historyEmptySub:'Search a profile or confirm a recharge and it will appear here with its photo.',
+      balanceTitle:'Edit coins',
+      saveBtn:'Save',
+      cancel:'Cancel',
+      safe:'🛡️ Secure payment'
+    } : {
+      title:'Monedas disponibles',
+      defaultName:'Busca un perfil',
+      defaultMeta:'Ingresa un usuario para mostrar su foto',
+      searchTitle:'Buscar perfil',
+      searchBtn:'Buscar',
+      searchPh:'Ej: beebootee',
+      reward:'Invita y consigue recompensas',
+      recharge:'Recarga',
+      save:'Ahorra un 25 % con una tarifa de servicio de terceros más baja.',
+      method:'',
+      buy:'♪ Comprar por ',
+      orderTitle:'Resumen del pedido',
+      account:'Cuenta',
+      orderCoins:'Compra de ',
+      more:'Ver más ›',
+      confirm:'Confirmar demo',
+      total:'Total',
+      helpTitle:'Ayuda y ajustes',
+      helpLang:'Idioma',
+      helpCurrency:'Moneda',
+      helpCurrencyNote:'Puedes cambiar entre dólares y soles en toda la interfaz.',
+      helpOwner:'Soporte y contacto',
+      owner:'Dueño',
+      historyTitle:'Historial',
+      clear:'Limpiar',
+      historyEmpty:'Aún no hay historial',
+      historyEmptySub:'Busca un perfil o confirma una recarga y aparecerá aquí con su foto.',
+      balanceTitle:'Editar monedas',
+      saveBtn:'Guardar',
+      cancel:'Cancelar',
+      safe:'🛡️ Pago seguro'
+    };
+  }
+
+  function updateSettingsButtons(){
+    $('langEs').classList.toggle('active', settings.language === 'es');
+    $('langEn').classList.toggle('active', settings.language === 'en');
+    $('currencyUsd').classList.toggle('active', settings.currency === 'USD');
+    $('currencyPen').classList.toggle('active', settings.currency === 'PEN');
+  }
+
+  function applyLanguage(){
+    const t = getTexts();
+    const titleLabel = document.querySelector('.titleLabel');
+    if(titleLabel) titleLabel.textContent = t.title;
+    const searchTitle = document.querySelector('.searchTitle');
+    if(searchTitle) searchTitle.textContent = t.searchTitle;
+    const rewardText = document.querySelector('.rewardText');
+    if(rewardText) rewardText.textContent = t.reward;
+    const rechargeHead = document.querySelector('.rechargeHead');
+    if(rechargeHead) rechargeHead.textContent = t.recharge;
+    const saveEl = document.querySelector('.save');
+    if(saveEl){
+      saveEl.innerHTML = t.save + ' <span class="infoDot" id="infoDot">i</span>';
+      $('infoDot').onclick = () => toast(settings.language === 'en' ? 'Informational demo rate.' : 'Tarifa demo informativa.', 'info');
+    }
+    const payLine = document.querySelector('.payLine > span');
+    if(payLine) payLine.textContent = t.method;
+    const orderTitle = document.querySelector('#orderModal .sheetTitle');
+    if(orderTitle) orderTitle.textContent = t.orderTitle;
+    const accountLabel = document.querySelector('#orderModal .orderRow > span');
+    if(accountLabel) accountLabel.textContent = t.account;
+    const methodTitle = document.querySelector('.methodTitle span');
+    if(methodTitle) methodTitle.textContent = t.method;
+    const moreBtn = $('moreBtn');
+    if(moreBtn) moreBtn.textContent = t.more;
+    const confirmBtn = $('confirmBtn');
+    if(confirmBtn) confirmBtn.textContent = t.confirm;
+    const totalLabel = document.querySelector('.total span');
+    if(totalLabel) totalLabel.textContent = t.total;
+    const balTitle = document.querySelector('#balanceModal .sheetTitle');
+    if(balTitle) balTitle.textContent = t.balanceTitle;
+    if($('saveBalance')) $('saveBalance').textContent = t.saveBtn;
+    if($('cancelBalance')) $('cancelBalance').textContent = t.cancel;
+    if($('helpScreenTitle')) $('helpScreenTitle').textContent = t.helpTitle;
+    if($('helpLanguageTitle')) $('helpLanguageTitle').textContent = t.helpLang;
+    if($('helpCurrencyTitle')) $('helpCurrencyTitle').textContent = t.helpCurrency;
+    if($('helpCurrencyNote')) $('helpCurrencyNote').textContent = t.helpCurrencyNote;
+    if($('helpOwnerTitle')) $('helpOwnerTitle').textContent = t.helpOwner;
+    if($('ownerLabel')) $('ownerLabel').textContent = t.owner;
+    if($('closeHistory') && $('closeHistory').parentElement.querySelector('.sheetTitle')) $('closeHistory').parentElement.querySelector('.sheetTitle').textContent = t.historyTitle;
+    if($('clearHistoryBtn')) $('clearHistoryBtn').textContent = t.clear;
+    const safeEls = document.querySelectorAll('.safe, .sheetSafe');
+    safeEls.forEach(el => el.textContent = t.safe);
+    if(!profile.loaded){
+      $('profileName').textContent = t.defaultName;
+      $('profileUser').textContent = t.defaultMeta;
+    }
+    $('usernameInput').placeholder = t.searchPh;
+    $('searchBtn').textContent = t.searchBtn;
+    updateBuy();
+    renderHistory();
+    updateSettingsButtons();
+  }
+
+  function applySettings(){
+    saveSettings();
+    applyLanguage();
+    renderCoins();
+    updateBuy();
+    if(activeHistoryItem) openHistoryDetail(activeHistoryItem);
+  }
+
+  function parseBalance(raw){
+    const text = String(raw || '').trim().toUpperCase();
+    const m = text.match(/([0-9]+(?:\.[0-9]+)?)([A-Z]*)/);
+    if(!m) return {value:71818,suffix:'K'};
+    return {value: Math.max(0, parseFloat(m[1]) || 0), suffix: m[2] || 'K'};
+  }
+
+  function formatBalance(value, suffix){
+    const n = Math.max(0, Math.round(value));
+    return n + (suffix || 'K');
+  }
+
+  function getBalanceState(){
+    const saved = localStorage.getItem(BALANCE_KEY) || '71818K';
+    return parseBalance(saved);
+  }
+
+  function saveBalanceState(state){
+    localStorage.setItem(BALANCE_KEY, formatBalance(state.value, state.suffix));
+  }
+
+  function updateAvailableCoins(){
+    const state = getBalanceState();
+    $('availableCoinsValue').textContent = formatBalance(state.value, state.suffix);
+  }
+
+  function getRecentCoins(){
+    return Number(localStorage.getItem(RECENT_KEY) || 80);
+  }
+
+  function setRecentCoins(value){
+    localStorage.setItem(RECENT_KEY, String(value));
+  }
+
+  function openBalanceEditor(){
+    $('balanceInput').value = $('availableCoinsValue').textContent.trim() || '71818K';
+    showModal('balanceModal');
+    setTimeout(() => $('balanceInput').focus(), 40);
+  }
+
+  function saveBalanceEditor(){
+    const clean = $('balanceInput').value.trim().toUpperCase();
+    if(!clean){
+      toast('Escribe una cantidad válida.', 'warn');
+      return;
+    }
+    const state = parseBalance(clean);
+    saveBalanceState(state);
+    updateAvailableCoins();
+    hideModal('balanceModal');
+    toast('Monedas disponibles actualizadas.', 'success');
+  }
+
+  function spendCoins(amount){
+    const state = getBalanceState();
+    state.value = Math.max(0, state.value - Number(amount || 0));
+    saveBalanceState(state);
+    updateAvailableCoins();
+  }
+
+  function escapeHtml(v){
+    return String(v || '').replace(/[&<>"']/g, s => ({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[s]));
+  }
+
+  function toast(msg,type='info', title=''){
+    const t = $('toast');
+    const icon = $('toastIcon');
+    const titleEl = $('toastTitle');
+    const msgEl = $('toastMsg');
+    const config = {
+      info:['ℹ','Aviso'],
+      success:['✓','Listo'],
+      warn:['!','Atención']
+    }[type] || ['ℹ','Aviso'];
+    t.className = 'toast t-' + type;
+    icon.textContent = config[0];
+    titleEl.textContent = title || config[1];
+    msgEl.textContent = msg;
+    t.classList.add('show');
+    clearTimeout(toast.timer);
+    toast.timer = setTimeout(()=>t.classList.remove('show'),2400);
+  }
+
+  function loadHistory(){
+    try{
+      return JSON.parse(localStorage.getItem(HISTORY_KEY) || '[]');
+    }catch(e){
+      return [];
+    }
+  }
+
+  function saveHistory(items){
+    localStorage.setItem(HISTORY_KEY, JSON.stringify(items.slice(0, 25)));
+  }
+
+  function addHistory(entry){
+    const items = loadHistory();
+    items.unshift(entry);
+    saveHistory(items);
+  }
+
+  function formatWhen(ts){
+    const d = new Date(ts || Date.now());
+    const dd = String(d.getDate()).padStart(2,'0');
+    const mm = String(d.getMonth()+1).padStart(2,'0');
+    const yy = String(d.getFullYear()).slice(-2);
+    const hh = String(d.getHours()).padStart(2,'0');
+    const mi = String(d.getMinutes()).padStart(2,'0');
+    return dd + '/' + mm + '/' + yy + ' · ' + hh + ':' + mi;
+  }
+
+  function renderHistory(){
+    const list = $('historyList');
+    const items = loadHistory();
+
+    if(!items.length){
+      const t = getTexts();
+      list.innerHTML = '<div class="historyEmpty"><strong>' + t.historyEmpty + '</strong><div style="margin-top:8px;font-size:15px;line-height:1.4">' + t.historyEmptySub + '</div></div>';
+      return;
+    }
+
+    list.innerHTML = items.map((item, index) => {
+      const name = escapeHtml(item.nickname || item.username || 'Usuario');
+      const user = escapeHtml(item.username || 'usuario');
+      const tag = item.kind === 'confirm' ? 'Confirmado' : 'Buscado';
+      const sub = item.kind === 'confirm'
+        ? `${item.coins || 0} monedas · ${money(item.price || 0)}`
+        : 'Perfil guardado en historial';
+      const avatar = item.avatar
+        ? `<img class="historyAvatar" src="${escapeHtml(item.avatar)}" alt="${name}">`
+        : `<div class="historyFallback">${escapeHtml((name[0] || '?').toUpperCase())}</div>`;
+      return `
+        <button class="historyItem" data-index="${index}">
+          ${avatar}
+          <div class="historyMain">
+            <div class="historyTop">
+              <div class="historyName">${name}</div>
+              <div class="historyTag">${tag}</div>
+            </div>
+            <div class="historySub">@${user} · ${sub}</div>
+            <div class="historyTime">${formatWhen(item.time)}</div>
+          </div>
+          <div class="historyGo">›</div>
+        </button>`;
+    }).join('');
+
+    list.querySelectorAll('.historyItem').forEach(btn => {
+      btn.onclick = () => {
+        const item = items[Number(btn.dataset.index)];
+        if(!item) return;
+        openHistoryDetail(item);
+      };
+    });
+  }
+
+  function applyHistoryItem(item){
+    if(!item) return;
+    profile = {
+      username: item.username || '',
+      nickname: item.nickname || item.username || 'Usuario',
+      avatar: item.avatar || '',
+      loaded: true
+    };
+    if(item.coins && item.price != null){
+      selected = {c:item.coins, p:item.price};
+      renderCoins();
+      updateBuy();
+    }
+    $('usernameInput').value = item.username || '';
+    updateProfile();
+    setStatus('', '');
+  }
+
+  async function openHistoryDetail(item){
+    activeHistoryItem = item;
+    const name = item.nickname || item.username || 'Usuario';
+    const user = item.username || 'usuario';
+    const wrap = $('detailAvatarWrap');
+    if(item.avatar){
+      wrap.innerHTML = '<img class="detailAvatar" src="' + escapeHtml(item.avatar) + '" alt="' + escapeHtml(name) + '">';
+    }else{
+      wrap.innerHTML = '<div class="detailFallback">' + escapeHtml((name[0] || '?').toUpperCase()) + '</div>';
+    }
+    $('detailName').textContent = name;
+    $('detailUser').textContent = '@' + user;
+    $('detailBadge').textContent = item.kind === 'confirm' ? 'Confirmado' : 'Buscado';
+    $('detailState').textContent = item.kind === 'confirm' ? 'Recarga confirmada' : 'Perfil buscado';
+    $('detailCoins').textContent = item.kind === 'confirm' ? (item.coins || 0) + ' monedas' : 'Aún sin compra';
+    $('detailPrice').textContent = item.kind === 'confirm' ? money(item.price || 0) : '—';
+    $('detailTime').textContent = formatWhen(item.time);
+    $('detailUsernameRow').textContent = '@' + user;
+    const eta = getArrivalInfo(item);
+    $('detailETA').textContent = eta.main;
+    $('detailETASub').textContent = eta.sub;
+    $('detailFollowers').textContent = 'Cargando...';
+    $('detailFollowersSub').textContent = 'Leyendo seguidores reales del perfil.';
+    $('detailFollowing').textContent = '...';
+    $('detailLikes').textContent = '...';
+    $('detailVideos').textContent = '...';
+    $('detailVerified').textContent = 'Cargando';
+    $('detailBio').textContent = 'Buscando más datos reales del perfil.';
+    hideModal('historyModal');
+    showModal('historyDetailModal');
+
+    const live = await fetchLiveProfile(user);
+    if(activeHistoryItem !== item) return;
+    if(live.avatar){
+      wrap.innerHTML = '<img class="detailAvatar" src="' + escapeHtml(live.avatar) + '" alt="' + escapeHtml(name) + '">';
+    }
+    if(live.nickname && live.nickname !== name){
+      $('detailName').textContent = live.nickname;
+    }
+    $('detailFollowers').textContent = compactNumber(live.followers);
+    $('detailFollowersSub').textContent = live.followers == null
+      ? 'No se pudieron leer los seguidores ahora mismo.'
+      : 'Seguidores en tiempo real desde el perfil.';
+    $('detailFollowing').textContent = compactNumber(live.following);
+    $('detailLikes').textContent = compactNumber(live.likes);
+    $('detailVideos').textContent = compactNumber(live.videos);
+    $('detailVerified').textContent = live.verified === true ? 'Verificada' : (live.verified === false ? 'Pública' : 'Sin dato');
+    $('detailBio').textContent = live.bio ? live.bio.slice(0, 80) : 'Siguiendo, likes, videos y verificación mostrados si están disponibles.';
+  }
+
+
+  function setStatus(msg,type){
+    const s = $('status');
+    s.textContent = msg || '';
+    s.className = 'status ' + (type || '');
+    if(msg){
+      s.classList.add('show');
+    }else{
+      s.classList.remove('show');
+    }
+  }
+
+  function cleanUsername(value){
+    let u = (value || '').trim().replace(/^@/,'');
+    try{
+      if(/^https?:\/\//i.test(u)){
+        const url = new URL(u);
+        const part = url.pathname.split('/').find(x => x.startsWith('@'));
+        if(part) u = part.slice(1);
+      }
+    }catch(e){}
+    return u.split(/[?\s/]/)[0].replace('@','');
+  }
+
+  function firstLetter(value){
+    return ((value || '?').replace('@','').trim()[0] || '?').toUpperCase();
+  }
+
+  function setAvatar(url, name){
+    const img = $('avatar');
+    const wrap = $('avatarInner');
+    const fallback = $('fallback');
+    const order = $('orderAvatar');
+    fallback.textContent = firstLetter(name);
+
+    if(!url){
+      lastAvatar = "";
+      img.classList.remove('show');
+      wrap.classList.remove('hasPhoto');
+      img.removeAttribute('src');
+      order.removeAttribute('src');
+      return;
+    }
+
+    if(url === lastAvatar && img.classList.contains('show')) return;
+
+    lastAvatar = url;
+    avatarToken++;
+    const myToken = avatarToken;
+
+    img.classList.remove('show');
+    wrap.classList.remove('hasPhoto');
+
+    img.onload = function(){
+      if(myToken !== avatarToken) return;
+      img.classList.add('show');
+      wrap.classList.add('hasPhoto');
+      setStatus('Perfil cargado correctamente para @' + profile.username + '.', 'ok');
+    };
+
+    img.onerror = function(){
+      if(myToken !== avatarToken) return;
+      img.classList.remove('show');
+      wrap.classList.remove('hasPhoto');
+      setStatus('El perfil cargó, pero la imagen fue bloqueada por la API.', 'err');
+    };
+
+    img.src = url;
+    order.src = url;
+  }
+
+  function updateProfile(){
+    const t = getTexts();
+    $('profileName').textContent = profile.nickname || profile.username || t.defaultName;
+    $('profileUser').textContent = profile.loaded ? '@' + profile.username : t.defaultMeta;
+    $('orderUser').textContent = profile.loaded ? profile.username : 'usuario';
+    setAvatar(profile.avatar, profile.nickname || profile.username);
+  }
+
+  function updateBuy(){
+    const t = getTexts();
+    $('buyBtn').textContent = t.buy + money(selected.p);
+    $('orderCoins').textContent = t.orderCoins + selected.c + ' Monedas';
+    $('orderPrice').textContent = money(selected.p);
+    $('totalPrice').textContent = money(selected.p);
+  }
+
+  function renderCoins(){
+    const grid = $('coinGrid');
+    const recentCoins = getRecentCoins();
+    grid.innerHTML = '';
+    coins.forEach(item => {
+      const btn = document.createElement('button');
+      btn.className = 'coinBtn';
+
+      if(item.custom){
+        btn.innerHTML = '<div class="custom">Personalizar</div>';
+        btn.onclick = () => showModal('customModal');
+      }else{
+        if(item.c === selected.c) btn.classList.add('active');
+        const recentBadge = item.c === recentCoins ? '<div class="recent activeRecent">Reciente</div>' : '';
+        btn.innerHTML =
+          recentBadge +
+          '<div class="num"><span class="tiktokCoin"><img src="'+coinImage+'" alt=""></span><span>'+item.c+'</span></div>' +
+          '<div class="price">'+money(item.p)+'</div>';
+        btn.onclick = () => {
+          selected = {c:item.c,p:item.p};
+          setRecentCoins(item.c);
+          renderCoins();
+          updateBuy();
+        };
+      }
+      grid.appendChild(btn);
+    });
+  }
+
+  function extractData(obj, username){
+    const avatars = [];
+    const names = [];
+
+    function walk(x, depth){
+      if(!x || depth > 9) return;
+      if(Array.isArray(x)){
+        x.forEach(v => walk(v, depth + 1));
+        return;
+      }
+      if(typeof x === 'object'){
+        for(const k in x){
+          const v = x[k];
+          const key = k.toLowerCase();
+
+          if(typeof v === 'string'){
+            const s = v.replace(/\u0026/g,'&');
+
+            if((key.includes('avatar') || key.includes('cover')) && /^https?:\/\//.test(s)){
+              avatars.push(s);
+            }
+
+            if(['nickname','nick_name','name','unique_id','uniqueid'].includes(key) && s && !/^https?:/.test(s)){
+              names.push(s);
+            }
+          }else{
+            walk(v, depth + 1);
+          }
+        }
+      }
+    }
+
+    walk(obj,0);
+
+    return {
+      username,
+      nickname: names.find(n => n.toLowerCase() !== username.toLowerCase()) || names[0] || username,
+      avatar: avatars[0] || '',
+      loaded:true
+    };
+  }
+
+  function extractNumericByKeys(obj, wantedKeys, bannedKeys=[]){
+    const values = [];
+    function walk(x, depth){
+      if(x == null || depth > 10) return;
+      if(Array.isArray(x)){
+        x.forEach(v => walk(v, depth + 1));
+        return;
+      }
+      if(typeof x === 'object'){
+        for(const k in x){
+          const v = x[k];
+          const key = k.toLowerCase();
+          const wanted = wantedKeys.some(w => key.includes(w));
+          const banned = bannedKeys.some(b => key.includes(b));
+          if(wanted && !banned){
+            if(typeof v === 'number' && !Number.isNaN(v)) values.push(v);
+            else if(typeof v === 'string'){
+              const clean = v.replace(/,/g,'').trim();
+              if(/^\d+$/.test(clean)) values.push(Number(clean));
+            }
+          }
+          if(typeof v === 'object') walk(v, depth + 1);
+        }
+      }
+    }
+    walk(obj,0);
+    return values.length ? Math.max(...values) : null;
+  }
+
+  function extractBooleanByKeys(obj, wantedKeys){
+    let found = null;
+    function walk(x, depth){
+      if(x == null || depth > 10 || found !== null) return;
+      if(Array.isArray(x)){
+        x.forEach(v => walk(v, depth + 1));
+        return;
+      }
+      if(typeof x === 'object'){
+        for(const k in x){
+          const v = x[k];
+          const key = k.toLowerCase();
+          if(wantedKeys.some(w => key.includes(w)) && typeof v === 'boolean'){
+            found = v;
+            return;
+          }
+          if(typeof v === 'object') walk(v, depth + 1);
+          if(found !== null) return;
+        }
+      }
+    }
+    walk(obj,0);
+    return found;
+  }
+
+  function extractStringByKeys(obj, wantedKeys){
+    let found = '';
+    function walk(x, depth){
+      if(x == null || depth > 10 || found) return;
+      if(Array.isArray(x)){
+        x.forEach(v => walk(v, depth + 1));
+        return;
+      }
+      if(typeof x === 'object'){
+        for(const k in x){
+          const v = x[k];
+          const key = k.toLowerCase();
+          if(wantedKeys.some(w => key.includes(w)) && typeof v === 'string' && v.trim()){
+            found = v.trim();
+            return;
+          }
+          if(typeof v === 'object') walk(v, depth + 1);
+          if(found) return;
+        }
+      }
+    }
+    walk(obj,0);
+    return found;
+  }
+
+  function compactNumber(value){
+    if(value == null || Number.isNaN(Number(value))) return 'No disp.';
+    const n = Number(value);
+    if(n >= 1000000) return (n / 1000000).toFixed(n >= 10000000 ? 0 : 1).replace(/\.0$/,'') + 'M';
+    if(n >= 1000) return (n / 1000).toFixed(n >= 100000 ? 0 : 1).replace(/\.0$/,'') + 'K';
+    return String(n);
+  }
+
+  function getArrivalInfo(item){
+    if(!item || item.kind !== 'confirm' || !item.time){
+      return {main:'Sin recarga', sub:'Aquí aparecerá el tiempo estimado cuando confirmes una compra.'};
+    }
+    const eta = item.time + 24 * 60 * 60 * 1000;
+    const diff = eta - Date.now();
+    const etaDate = formatWhen(eta);
+    if(diff <= 0){
+      return {main:'Disponible', sub:'La llegada estimada ya se cumplió desde ' + etaDate + '.'};
+    }
+    const h = Math.floor(diff / 3600000);
+    const m = Math.floor((diff % 3600000) / 60000);
+    return {main: etaDate, sub: 'Llegada aprox. en ' + h + ' h ' + m + ' min.'};
+  }
+
+  async function fetchLiveProfile(username){
+    const endpoints = [
+      'https://www.tikwm.com/api/user/info?unique_id=' + encodeURIComponent(username),
+      'https://tikwm.com/api/user/info?unique_id=' + encodeURIComponent(username),
+      'https://www.tikwm.com/api/user/posts?unique_id=' + encodeURIComponent(username) + '&count=1',
+      'https://tikwm.com/api/user/posts?unique_id=' + encodeURIComponent(username) + '&count=1'
+    ];
+
+    for(const endpoint of endpoints){
+      try{
+        const data = await getJson(endpoint, 8500);
+        const found = extractData(data, username);
+        const followers = extractNumericByKeys(data, ['follower','fans'], ['following']);
+        const following = extractNumericByKeys(data, ['following']);
+        const likes = extractNumericByKeys(data, ['heart','digg','like']);
+        const videos = extractNumericByKeys(data, ['video','aweme','post']);
+        const verified = extractBooleanByKeys(data, ['verified']);
+        const bio = extractStringByKeys(data, ['signature','bio','desc']);
+        return {
+          avatar: found.avatar || '',
+          nickname: found.nickname || username,
+          username,
+          followers,
+          following,
+          likes,
+          videos,
+          verified,
+          bio
+        };
+      }catch(e){}
+    }
+
+    return {avatar:'', nickname:username, username, followers:null, following:null, likes:null, videos:null, verified:null, bio:''};
+  }
+
+  async function getJson(url, ms){
+    if(controller) controller.abort();
+    controller = new AbortController();
+    const timer = setTimeout(()=>controller.abort(), ms);
+
+    try{
+      const response = await fetch(url, {signal: controller.signal, cache:'no-store'});
+      return await response.json();
+    }finally{
+      clearTimeout(timer);
+    }
+  }
+
+  async function searchProfile(){
+    const username = cleanUsername($('usernameInput').value);
+
+    if(!username){
+      toast('Escribe un usuario para buscar el perfil.', 'warn');
+      $('usernameInput').focus();
+      return;
+    }
+
+    $('searchBtn').disabled = true;
+    $('searchBtn').textContent = '...';
+    setStatus('Buscando foto del perfil...', '');
+
+    const endpoints = [
+      'https://www.tikwm.com/api/user/info?unique_id=' + encodeURIComponent(username),
+      'https://tikwm.com/api/user/info?unique_id=' + encodeURIComponent(username),
+      'https://www.tikwm.com/api/user/posts?unique_id=' + encodeURIComponent(username) + '&count=1',
+      'https://tikwm.com/api/user/posts?unique_id=' + encodeURIComponent(username) + '&count=1'
+    ];
+
+    for(const endpoint of endpoints){
+      try{
+        const data = await getJson(endpoint, 8500);
+        const found = extractData(data, username);
+
+        if(found.avatar){
+          profile = found;
+          updateProfile();
+          addHistory({
+            kind:'search',
+            username: profile.username,
+            nickname: profile.nickname,
+            avatar: profile.avatar,
+            time: Date.now()
+          });
+          renderHistory();
+          toast('Perfil cargado correctamente.', 'success');
+          $('searchBtn').disabled = false;
+          $('searchBtn').textContent = 'Buscar';
+          return;
+        }
+      }catch(e){}
+    }
+
+    const backup = 'https://unavatar.io/tiktok/' + encodeURIComponent(username);
+    profile = {username, nickname: username, avatar: backup, loaded:true};
+    updateProfile();
+    addHistory({
+      kind:'search',
+      username: profile.username,
+      nickname: profile.nickname,
+      avatar: profile.avatar,
+      time: Date.now()
+    });
+    renderHistory();
+
+    $('searchBtn').disabled = false;
+    $('searchBtn').textContent = 'Buscar';
+    toast('Perfil cargado con imagen de respaldo.', 'info');
+  }
+
+  function showModal(id){ $(id).classList.add('show'); }
+  function hideModal(id){ $(id).classList.remove('show'); }
+
+  function reset(){
+    profile = {username:'', nickname:'Busca un perfil', avatar:'', loaded:false};
+    selected = {c:30,p:.31};
+    $('usernameInput').value = '';
+    setStatus('', '');
+    renderCoins();
+    updateBuy();
+    updateProfile();
+    toast('Formulario reiniciado.', 'success');
+  }
+
+  $('availableCoinsTitle').onclick = openBalanceEditor;
+
+  updateAvailableCoins();
+  if(!localStorage.getItem(RECENT_KEY)) setRecentCoins(80);
+
+  $('searchBtn').onclick = searchProfile;
+  $('usernameInput').onkeydown = e => { if(e.key === 'Enter') searchProfile(); };
+
+  $('buyBtn').onclick = () => {
+    if(!profile.loaded){
+      toast('Primero busca un usuario.', 'warn');
+      $('usernameInput').focus();
+      return;
+    }
+    updateProfile();
+    updateBuy();
+    showModal('orderModal');
+  };
+
+  $('confirmBtn').onclick = () => {
+    hideModal('orderModal');
+    const view = $('successView');
+    const card = $('successCard');
+
+    card.classList.remove('done');
+    $('successTitle').textContent = 'Procesando...';
+    $('successText').textContent = 'Preparando confirmación de monedas...';
+    view.classList.add('show');
+
+    setTimeout(() => {
+      card.classList.add('done');
+      $('successTitle').textContent = '¡Confirmación exitosa!';
+      $('successText').textContent = 'Confirmación recibida. Se descontaron ' + selected.c + ' monedas y se reflejarán en 24 horas aproximadamente.';
+      spendCoins(selected.c);
+      addHistory({
+        kind:'confirm',
+        username: profile.username,
+        nickname: profile.nickname,
+        avatar: profile.avatar,
+        coins: selected.c,
+        price: selected.p,
+        time: Date.now()
+      });
+      renderHistory();
+    }, 1300);
+  };
+
+  $('closeOrder').onclick = () => hideModal('orderModal');
+  $('closeHelp').onclick = () => hideModal('helpModal');
+  $('xHelp').onclick = () => hideModal('helpModal');
+  $('closeCustom').onclick = () => hideModal('customModal');
+  $('xCustom').onclick = () => hideModal('customModal');
+  $('closeHistory').onclick = () => hideModal('historyModal');
+  $('closeBalance').onclick = () => hideModal('balanceModal');
+  $('xBalance').onclick = () => hideModal('balanceModal');
+  $('cancelBalance').onclick = () => hideModal('balanceModal');
+  $('saveBalance').onclick = saveBalanceEditor;
+  $('balanceInput').onkeydown = e => { if(e.key === 'Enter') saveBalanceEditor(); };
+  $('clearHistoryBtn').onclick = () => { localStorage.removeItem(HISTORY_KEY); renderHistory(); toast('Historial limpiado.', 'success'); };
+  $('closeHistoryDetail').onclick = () => { hideModal('historyDetailModal'); showModal('historyModal'); };
+  $('backToHistoryBtn').onclick = () => { hideModal('historyDetailModal'); showModal('historyModal'); };
+  $('useHistoryDetail').onclick = () => { if(activeHistoryItem){ applyHistoryItem(activeHistoryItem); hideModal('historyDetailModal'); toast('Perfil cargado desde el historial.', 'success'); } };
+  $('loadFromHistoryBtn').onclick = () => { if(activeHistoryItem){ applyHistoryItem(activeHistoryItem); hideModal('historyDetailModal'); toast('Perfil cargado desde el historial.', 'success'); } };
+  $('doneBtn').onclick = () => $('successView').classList.remove('show');
+  $('newBtn').onclick = () => { $('successView').classList.remove('show'); reset(); };
+  $('clearBtn').onclick = reset;
+
+  $('historyBtn').onclick = () => { renderHistory(); showModal('historyModal'); };
+  $('helpBtn').onclick = () => showModal('helpModal');
+  $('rewardBtn').onclick = () => toast('Sección de recompensas demo.', 'info');
+  $('infoDot').onclick = () => toast('Tarifa demo informativa.', 'info');
+  $('helpOrder').onclick = () => showModal('helpModal');
+  $('moreBtn').onclick = () => toast('Métodos demo.', 'info');
+
+  $('saveCustom').onclick = () => {
+    const v = parseInt($('customInput').value, 10);
+    if(!v || v < 1){
+      toast('Pon una cantidad válida.', 'warn');
+      return;
+    }
+
+    selected = {c:v, p:+Math.max(.01, v * .0104).toFixed(2)};
+    renderCoins();
+    updateBuy();
+    hideModal('customModal');
+    toast('Cantidad personalizada guardada: ' + v + ' monedas.', 'success');
+  };
+
+  $('langEs').onclick = () => { settings.language = 'es'; applySettings(); };
+  $('langEn').onclick = () => { settings.language = 'en'; applySettings(); };
+  $('currencyUsd').onclick = () => { settings.currency = 'USD'; applySettings(); };
+  $('currencyPen').onclick = () => { settings.currency = 'PEN'; applySettings(); };
+
+  document.querySelectorAll('.method').forEach(btn => {
+    btn.onclick = () => {
+      document.querySelectorAll('.method').forEach(x => x.classList.remove('active'));
+      btn.classList.add('active');
+    };
+  });
+
+  document.querySelectorAll('.modal').forEach(m => {
+    m.onclick = e => {
+      if(e.target === m) hideModal(m.id);
+    };
+  });
+
+  applyLanguage();
+  renderCoins();
+  updateBuy();
+  updateProfile();
+  renderHistory();
+  updateSettingsButtons();
+})();
+</script>
+
+<script type="module">
+  import { initializeApp } from "https://www.gstatic.com/firebasejs/10.12.5/firebase-app.js";
+  import {
+    getAuth,
+    signInWithEmailAndPassword,
+    onAuthStateChanged,
+    signOut
+  } from "https://www.gstatic.com/firebasejs/10.12.5/firebase-auth.js";
+  import {
+    getFirestore,
+    doc,
+    getDoc,
+    setDoc,
+    updateDoc,
+    deleteDoc,
+    serverTimestamp
+  } from "https://www.gstatic.com/firebasejs/10.12.5/firebase-firestore.js";
+
+  const firebaseConfig = {
+    apiKey: "AIzaSyD7rSIdgwVOUyBdi3xP7V4kiRPlYPMpO_8",
+    authDomain: "tik-tok-d8eae.firebaseapp.com",
+    projectId: "tik-tok-d8eae",
+    storageBucket: "tik-tok-d8eae.firebasestorage.app",
+    messagingSenderId: "418976194584",
+    appId: "1:418976194584:web:4dfe546909721e987c236d",
+    measurementId: "G-LQ65RP896D"
+  };
+
+  const app = initializeApp(firebaseConfig);
+  const auth = getAuth(app);
+  const db = getFirestore(app);
+
+  const DEVICE_KEY = "tiktokDemoDeviceIdV1";
+  const PASS_KEY = "tiktokDemoLastPasswordV1";
+
+  function getDeviceId(){
+    let id = localStorage.getItem(DEVICE_KEY);
+    if(!id){
+      const random = (crypto && crypto.randomUUID) ? crypto.randomUUID() : "dev-" + Date.now() + "-" + Math.random().toString(16).slice(2);
+      id = random;
+      localStorage.setItem(DEVICE_KEY, id);
+    }
+    return id;
+  }
+
+  const loginLoading = document.getElementById("loginLoading");
+  const loginScreen = document.getElementById("loginScreen");
+  const mainApp = document.getElementById("mainApp");
+  const bottomBar = document.getElementById("bottomBar");
+  const email = document.getElementById("loginEmail");
+  const password = document.getElementById("loginPassword");
+  const loginButton = document.getElementById("loginButton");
+  const loginError = document.getElementById("loginError");
+  const logoutButton = document.getElementById("logoutButton");
+  const resetDeviceButton = document.getElementById("resetDeviceButton");
+  const accountEmail = document.getElementById("accountEmail");
+  const accountPassword = document.getElementById("accountPassword");
+  const accountDevice = document.getElementById("accountDevice");
+  const accountDeviceStatus = document.getElementById("accountDeviceStatus");
+  const toggleAccountPassword = document.getElementById("toggleAccountPassword");
+  const toggleAccountData = document.getElementById("toggleAccountData");
+  const accountDataPanel = document.getElementById("accountDataPanel");
+  let accountPassVisible = false;
+  let accountDataVisible = false;
+
+  function showLogin(message = ""){
+    mainApp.classList.add("auth-hidden");
+    if(bottomBar) bottomBar.classList.add("auth-hidden");
+    loginScreen.style.display = "grid";
+    loginLoading.classList.add("hidden");
+    loginError.textContent = message;
+  }
+
+  function showApp(){
+    loginScreen.style.display = "none";
+    mainApp.classList.remove("auth-hidden");
+    if(bottomBar) bottomBar.classList.remove("auth-hidden");
+    loginLoading.classList.add("hidden");
+    loginError.textContent = "";
+  }
+
+  function maskPassword(pass){
+    return pass ? "•".repeat(Math.min(Math.max(pass.length, 6), 12)) : "No guardada";
+  }
+
+  function updateAccountBox(user){
+    const savedPass = localStorage.getItem(PASS_KEY) || "";
+    if(accountEmail) accountEmail.textContent = user?.email || "—";
+    if(accountPassword) accountPassword.textContent = accountPassVisible ? (savedPass || "No guardada") : maskPassword(savedPass);
+    if(accountDevice) accountDevice.textContent = getDeviceId().slice(0, 8) + "..." + getDeviceId().slice(-4);
+    if(accountDeviceStatus) accountDeviceStatus.textContent = "Vinculado";
+  }
+
+  async function verifyOneDevice(user){
+    const deviceId = getDeviceId();
+    const ref = doc(db, "deviceLocks", user.uid);
+    const snap = await getDoc(ref);
+
+    if(!snap.exists()){
+      await setDoc(ref, {
+        uid: user.uid,
+        email: user.email || "",
+        deviceId,
+        createdAt: serverTimestamp(),
+        lastLoginAt: serverTimestamp()
+      });
+      return true;
+    }
+
+    const data = snap.data() || {};
+    if(data.deviceId && data.deviceId !== deviceId){
+      await signOut(auth);
+      showLogin("Esta cuenta ya está vinculada a otro dispositivo.");
+      return false;
+    }
+
+    await updateDoc(ref, {
+      email: user.email || "",
+      lastLoginAt: serverTimestamp()
+    });
+    return true;
+  }
+
+  async function resetDeviceLock(){
+    const user = auth.currentUser;
+    if(!user || !resetDeviceButton) return;
+
+    resetDeviceButton.disabled = true;
+    const oldText = resetDeviceButton.textContent;
+    resetDeviceButton.textContent = "Reseteando...";
+
+    try{
+      const ref = doc(db, "deviceLocks", user.uid);
+      await deleteDoc(ref);
+      localStorage.removeItem(DEVICE_KEY);
+      if(accountDeviceStatus) accountDeviceStatus.textContent = "Reseteado";
+      await signOut(auth);
+      location.reload();
+    }catch(e){
+      resetDeviceButton.disabled = false;
+      resetDeviceButton.textContent = oldText;
+      if(accountDeviceStatus) accountDeviceStatus.textContent = "Sin permiso para resetear";
+    }
+  }
+
+  async function doLogin(){
+    const mail = email.value.trim();
+    const pass = password.value;
+
+    if(!mail || !pass){
+      loginError.textContent = "Pon tu correo y contraseña.";
+      return;
+    }
+
+    loginButton.disabled = true;
+    loginButton.textContent = "Validando...";
+    loginError.textContent = "";
+
+    try{
+      await signInWithEmailAndPassword(auth, mail, pass);
+      localStorage.setItem(PASS_KEY, pass);
+    }catch(e){
+      loginError.textContent = "Correo o contraseña incorrecta.";
+    }finally{
+      loginButton.disabled = false;
+      loginButton.textContent = "Ingresar";
+    }
+  }
+
+  loginButton.addEventListener("click", doLogin);
+  password.addEventListener("keydown", e => { if(e.key === "Enter") doLogin(); });
+  email.addEventListener("keydown", e => { if(e.key === "Enter") password.focus(); });
+
+  if(logoutButton){
+    logoutButton.addEventListener("click", async () => {
+      await signOut(auth);
+      location.reload();
+    });
+  }
+
+  if(resetDeviceButton){
+    resetDeviceButton.addEventListener("click", resetDeviceLock);
+  }
+
+  if(toggleAccountData){
+    toggleAccountData.addEventListener("click", () => {
+      accountDataVisible = !accountDataVisible;
+      if(accountDataPanel) accountDataPanel.classList.toggle("open", accountDataVisible);
+      toggleAccountData.textContent = accountDataVisible ? "Ocultar" : "Ver datos";
+    });
+  }
+
+  if(toggleAccountPassword){
+    toggleAccountPassword.addEventListener("click", () => {
+      accountPassVisible = !accountPassVisible;
+      updateAccountBox(auth.currentUser);
+    });
+  }
+
+  onAuthStateChanged(auth, async user => {
+    if(user){
+      loginLoading.classList.remove("hidden");
+      loginScreen.style.display = "none";
+      mainApp.classList.add("auth-hidden");
+      if(bottomBar) bottomBar.classList.add("auth-hidden");
+
+      try{
+        const allowed = await verifyOneDevice(user);
+        if(!allowed) return;
+        updateAccountBox(user);
+        showApp();
+      }catch(e){
+        await signOut(auth);
+        showLogin("Falta permiso en Firestore para vincular el dispositivo.");
+      }
+    }else{
+      showLogin();
+    }
+  });
+</script>
+
+
+<div class="installPrompt" id="installPrompt">
+  <div class="installPromptIcon"><img src="icon-192.png" alt="App"></div>
+  <div class="installPromptText">
+    <div class="installPromptTitle">Instalar como app</div>
+    <div class="installPromptSub">Abre rápido desde tu pantalla de inicio.</div>
+  </div>
+  <div class="installPromptBtns">
+    <button class="installPromptInstall" id="installAppBtn">Instalar</button>
+    <button class="installPromptClose" id="closeInstallPrompt" aria-label="Cerrar">×</button>
+  </div>
+</div>
+
+<div class="iosInstallBox" id="iosInstallBox">
+  <div class="iosInstallCard">
+    <h3>Instalar en iPhone</h3>
+    <p>En iPhone se instala desde Safari.</p>
+    <div class="iosInstallSteps">
+      <div>1. Toca Compartir ⎋</div>
+      <div>2. Elige “Añadir a pantalla de inicio”</div>
+      <div>3. Toca “Añadir”</div>
+    </div>
+    <button class="iosInstallOk" id="closeIosInstall">Listo</button>
+  </div>
+</div>
+
+
+<script id="pwa-install-script">
+(function(){
+  const isStandalone = window.matchMedia('(display-mode: standalone)').matches || window.navigator.standalone === true;
+  const isIOS = /iphone|ipad|ipod/i.test(navigator.userAgent);
+  const promptBox = document.getElementById('installPrompt');
+  const installBtn = document.getElementById('installAppBtn');
+  const closeBtn = document.getElementById('closeInstallPrompt');
+  const iosBox = document.getElementById('iosInstallBox');
+  const closeIos = document.getElementById('closeIosInstall');
+  let deferredPrompt = null;
+
+  function showInstall(){
+    if(isStandalone || localStorage.getItem('pwaInstallClosed') === '1') return;
+    if(promptBox) promptBox.classList.add('show');
+  }
+  function hideInstall(){ if(promptBox) promptBox.classList.remove('show'); }
+
+  if('serviceWorker' in navigator){
+    window.addEventListener('load', () => {
+      navigator.serviceWorker.register('./sw.js').catch(() => {});
+    });
+  }
+
+  window.addEventListener('beforeinstallprompt', (e) => {
+    e.preventDefault();
+    deferredPrompt = e;
+    setTimeout(showInstall, 900);
+  });
+
+  if(installBtn){
+    installBtn.addEventListener('click', async () => {
+      if(deferredPrompt){
+        hideInstall();
+        deferredPrompt.prompt();
+        try{ await deferredPrompt.userChoice; }catch(e){}
+        deferredPrompt = null;
+      }else if(isIOS && iosBox){
+        hideInstall();
+        iosBox.classList.add('show');
+      }
+    });
+  }
+  if(closeBtn){
+    closeBtn.addEventListener('click', () => {
+      localStorage.setItem('pwaInstallClosed','1');
+      hideInstall();
+    });
+  }
+  if(closeIos){ closeIos.addEventListener('click', () => iosBox.classList.remove('show')); }
+
+  // En iPhone no existe el prompt automático; mostramos una guía suave.
+  window.addEventListener('load', () => {
+    if(isIOS && !isStandalone && !localStorage.getItem('pwaInstallClosed')){
+      setTimeout(showInstall, 1500);
+    }
+  });
+})();
+</script>
+
+</body>
+</html>

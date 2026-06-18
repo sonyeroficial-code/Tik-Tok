@@ -1,0 +1,1 @@
+Sube estos archivos juntos al hosting. No hay carpetas: index.html, manifest.webmanifest, sw.js e iconos van en la raíz. Para instalar como app web usa HTTPS, por ejemplo Vercel o Firebase Hosting. Abre la web en Chrome y saldrá la opción de instalar. En iPhone usa Compartir > Añadir a pantalla de inicio.
