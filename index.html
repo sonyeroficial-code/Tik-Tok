@@ -1,5 +1,5 @@
 <!doctype html>
-<html lang="es" data-version="de-cero-final">
+<html lang="es" data-version="teclado-rapido-fix">
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, minimum-scale=1, user-scalable=no, viewport-fit=cover">
@@ -1501,6 +1501,34 @@ input{font-size:16px !important;}
 }
 </style>
 
+
+<style id="teclado-rapido-fix-css">
+/* Fix: teclado personalizado sin trabas en Android/iPhone */
+#customModal,
+#customModal .customTikTokSheet,
+#customModal .customTikTokBody,
+#customModal .customKeypad,
+#customModal .customKey{
+  -webkit-user-select:none !important;
+  user-select:none !important;
+  -webkit-touch-callout:none !important;
+}
+#customModal .customKey,
+#customModal .customRechargeBtn,
+#customModal .customBack,
+#customModal .customHelp{
+  touch-action:manipulation !important;
+  -webkit-tap-highlight-color:transparent !important;
+}
+#customModal .customKey{
+  cursor:pointer;
+  will-change:transform;
+}
+#customModal .customKey:active{
+  transform:scale(.985);
+}
+</style>
+
 </head>
 <body>
 
@@ -2901,7 +2929,23 @@ $('confirmBtn').onclick = () => {
   $('closeHelp').onclick = () => hideModal('helpModal');
   $('xHelp').onclick = () => hideModal('helpModal');
   $('closeCustom').onclick = () => hideModal('customModal');
-  document.querySelectorAll('#customModal .customKey').forEach(btn => { btn.onclick = () => pressCustomKey(btn.dataset.key); });
+  document.querySelectorAll('#customModal .customKey').forEach(btn => {
+    let lastTap = 0;
+    const tapKey = (ev) => {
+      if(ev){ ev.preventDefault(); ev.stopPropagation(); }
+      const now = Date.now();
+      if(now - lastTap < 35) return;
+      lastTap = now;
+      pressCustomKey(btn.dataset.key);
+    };
+    if(window.PointerEvent){
+      btn.addEventListener('pointerdown', tapKey, {passive:false});
+      btn.onclick = ev => { if(ev) ev.preventDefault(); };
+    }else{
+      btn.addEventListener('touchstart', tapKey, {passive:false});
+      btn.onclick = ev => { if(ev) ev.preventDefault(); tapKey(ev); };
+    }
+  });
   $('xCustom').onclick = () => {};
   $('closeHistory').onclick = () => hideModal('historyModal');
   $('closeBalance').onclick = () => hideModal('balanceModal');
@@ -3296,7 +3340,9 @@ $('confirmBtn').onclick = () => {
 
   document.addEventListener('touchend', function(e){
     var now = Date.now();
-    if(now - lastTouchEnd <= 350){
+    var target = e.target;
+    var interactive = target && target.closest && target.closest('button, input, textarea, select, a, #customModal, .customKey, .customKeypad');
+    if(!interactive && now - lastTouchEnd <= 350){
       e.preventDefault();
     }
     lastTouchEnd = now;
