@@ -806,6 +806,15 @@ input:focus{
 }
 
 /* Login Firebase */
+.transferScreen{
+  width:100%;max-width:560px;min-height:100dvh;margin:0 auto;padding:22px 18px calc(24px + env(safe-area-inset-bottom));
+  display:none;place-items:center;background:linear-gradient(180deg,#f8f9fc 0%,#f1f3f8 100%);
+}
+.transferNote{margin:-4px 0 16px;padding:12px 14px;border-radius:15px;background:#fff4f6;color:#a72043;font-size:13px;font-weight:750;line-height:1.4;border:1px solid #ffd5df}
+.transferActions{display:grid;gap:10px}
+.transferCancel{width:100%;height:48px;border-radius:16px;background:#f1f2f5;color:#222;font-size:15px;font-weight:900}
+.passwordHint{font-size:12px;color:#7b808c;font-weight:700;margin:-4px 2px 12px}
+
 .app.auth-hidden{display:none!important}
 .loginScreen{
   width:100%;
@@ -1571,6 +1580,39 @@ input{font-size:16px !important;}
 
     <button class="loginBtn" id="loginButton">Ingresar</button>
     <div class="loginError" id="loginError"></div>
+  </div>
+</section>
+
+<section class="transferScreen" id="transferScreen">
+  <div class="loginCard">
+    <div class="loginBrand">
+      <div class="loginLogo"><img src="" alt="Logo" id="transferLogo"></div>
+      <div>
+        <h1 class="loginTitle">Cambiar de dispositivo</h1>
+        <p class="loginSub">Protege tu cuenta antes de continuar</p>
+      </div>
+    </div>
+    <div class="transferNote">Tus datos son correctos. Para usar esta cuenta en este celular, crea una contraseña nueva. La sesión del celular anterior se cerrará automáticamente.</div>
+    <div class="loginField">
+      <label for="newPassword">Nueva contraseña</label>
+      <div class="loginInputWrap">
+        <svg viewBox="0 0 24 24" fill="none"><path d="M7 10V8a5 5 0 0 1 10 0v2" stroke-width="2" stroke-linecap="round"/><path d="M6 10h12v10H6V10Z" stroke-width="2"/><path d="M12 14v2" stroke-width="2" stroke-linecap="round"/></svg>
+        <input id="newPassword" type="password" autocomplete="new-password" placeholder="Mínimo 6 caracteres">
+      </div>
+    </div>
+    <div class="loginField">
+      <label for="confirmNewPassword">Confirmar contraseña</label>
+      <div class="loginInputWrap">
+        <svg viewBox="0 0 24 24" fill="none"><path d="M7 10V8a5 5 0 0 1 10 0v2" stroke-width="2" stroke-linecap="round"/><path d="M6 10h12v10H6V10Z" stroke-width="2"/><path d="M12 14v2" stroke-width="2" stroke-linecap="round"/></svg>
+        <input id="confirmNewPassword" type="password" autocomplete="new-password" placeholder="Repite la contraseña">
+      </div>
+    </div>
+    <div class="passwordHint">Usa al menos 6 caracteres.</div>
+    <div class="transferActions">
+      <button class="loginBtn" id="confirmTransferButton">Cambiar contraseña e ingresar</button>
+      <button class="transferCancel" id="cancelTransferButton" type="button">Cancelar</button>
+    </div>
+    <div class="loginError" id="transferError"></div>
   </div>
 </section>
 
@@ -3014,6 +3056,7 @@ $('confirmBtn').onclick = () => {
     getAuth,
     signInWithEmailAndPassword,
     onAuthStateChanged,
+    updatePassword,
     signOut
   } from "https://www.gstatic.com/firebasejs/10.12.5/firebase-auth.js";
   import {
@@ -3023,7 +3066,8 @@ $('confirmBtn').onclick = () => {
     setDoc,
     updateDoc,
     deleteDoc,
-    serverTimestamp
+    serverTimestamp,
+    onSnapshot
   } from "https://www.gstatic.com/firebasejs/10.12.5/firebase-firestore.js";
 
   const firebaseConfig = {
@@ -3055,12 +3099,19 @@ $('confirmBtn').onclick = () => {
 
   const loginLoading = document.getElementById("loginLoading");
   const loginScreen = document.getElementById("loginScreen");
+  const transferScreen = document.getElementById("transferScreen");
   const mainApp = document.getElementById("mainApp");
   const bottomBar = document.getElementById("bottomBar");
   const email = document.getElementById("loginEmail");
   const password = document.getElementById("loginPassword");
   const loginButton = document.getElementById("loginButton");
   const loginError = document.getElementById("loginError");
+  const newPassword = document.getElementById("newPassword");
+  const confirmNewPassword = document.getElementById("confirmNewPassword");
+  const confirmTransferButton = document.getElementById("confirmTransferButton");
+  const cancelTransferButton = document.getElementById("cancelTransferButton");
+  const transferError = document.getElementById("transferError");
+  const transferLogo = document.getElementById("transferLogo");
   const logoutButton = document.getElementById("logoutButton");
   const resetDeviceButton = document.getElementById("resetDeviceButton");
   const accountEmail = document.getElementById("accountEmail");
@@ -3072,10 +3123,17 @@ $('confirmBtn').onclick = () => {
   const accountDataPanel = document.getElementById("accountDataPanel");
   let accountPassVisible = false;
   let accountDataVisible = false;
+  let pendingTransferUser = null;
+  let stopDeviceWatcher = null;
+  let suppressWatcherLogout = false;
+
+  const originalLoginLogo = document.querySelector("#loginScreen .loginLogo img");
+  if(transferLogo && originalLoginLogo) transferLogo.src = originalLoginLogo.src;
 
   function showLogin(message = ""){
     mainApp.classList.add("auth-hidden");
     if(bottomBar) bottomBar.classList.add("auth-hidden");
+    if(transferScreen) transferScreen.style.display = "none";
     loginScreen.style.display = "grid";
     loginLoading.classList.add("hidden");
     loginError.textContent = message;
@@ -3083,6 +3141,7 @@ $('confirmBtn').onclick = () => {
 
   function showApp(){
     loginScreen.style.display = "none";
+    if(transferScreen) transferScreen.style.display = "none";
     mainApp.classList.remove("auth-hidden");
     if(bottomBar) bottomBar.classList.remove("auth-hidden");
     loginLoading.classList.add("hidden");
@@ -3119,8 +3178,13 @@ $('confirmBtn').onclick = () => {
 
     const data = snap.data() || {};
     if(data.deviceId && data.deviceId !== deviceId){
-      await signOut(auth);
-      showLogin("Esta cuenta ya está vinculada a otro dispositivo.");
+      pendingTransferUser = user;
+      mainApp.classList.add("auth-hidden");
+      if(bottomBar) bottomBar.classList.add("auth-hidden");
+      loginScreen.style.display = "none";
+      if(transferScreen) transferScreen.style.display = "grid";
+      loginLoading.classList.add("hidden");
+      if(transferError) transferError.textContent = "";
       return false;
     }
 
@@ -3129,6 +3193,60 @@ $('confirmBtn').onclick = () => {
       lastLoginAt: serverTimestamp()
     });
     return true;
+  }
+
+  function startDeviceWatcher(user){
+    if(stopDeviceWatcher) stopDeviceWatcher();
+    const ref = doc(db, "deviceLocks", user.uid);
+    stopDeviceWatcher = onSnapshot(ref, async snap => {
+      if(!auth.currentUser || suppressWatcherLogout || !snap.exists()) return;
+      const data = snap.data() || {};
+      if(data.deviceId && data.deviceId !== getDeviceId()){
+        if(stopDeviceWatcher){ stopDeviceWatcher(); stopDeviceWatcher = null; }
+        localStorage.removeItem(PASS_KEY);
+        await signOut(auth);
+        showLogin("Tu sesión se cerró porque la cuenta se abrió en otro celular.");
+      }
+    });
+  }
+
+  async function confirmDeviceTransfer(){
+    const user = pendingTransferUser || auth.currentUser;
+    const pass1 = newPassword?.value || "";
+    const pass2 = confirmNewPassword?.value || "";
+    if(!user){ showLogin("Vuelve a ingresar tus datos."); return; }
+    if(pass1.length < 6){ transferError.textContent = "La contraseña debe tener mínimo 6 caracteres."; return; }
+    if(pass1 !== pass2){ transferError.textContent = "Las contraseñas no coinciden."; return; }
+
+    confirmTransferButton.disabled = true;
+    confirmTransferButton.textContent = "Actualizando...";
+    transferError.textContent = "";
+    try{
+      await updatePassword(user, pass1);
+      suppressWatcherLogout = true;
+      await setDoc(doc(db, "deviceLocks", user.uid), {
+        uid: user.uid,
+        email: user.email || "",
+        deviceId: getDeviceId(),
+        transferredAt: serverTimestamp(),
+        lastLoginAt: serverTimestamp()
+      }, { merge:true });
+      localStorage.setItem(PASS_KEY, pass1);
+      pendingTransferUser = null;
+      suppressWatcherLogout = false;
+      startDeviceWatcher(user);
+      updateAccountBox(user);
+      showApp();
+    }catch(e){
+      suppressWatcherLogout = false;
+      console.error(e);
+      transferError.textContent = e?.code === "auth/requires-recent-login"
+        ? "Por seguridad, vuelve a iniciar sesión y repite el cambio."
+        : "No se pudo transferir la cuenta. Revisa los permisos de Firebase.";
+    }finally{
+      confirmTransferButton.disabled = false;
+      confirmTransferButton.textContent = "Cambiar contraseña e ingresar";
+    }
   }
 
   async function resetDeviceLock(){
@@ -3178,6 +3296,9 @@ $('confirmBtn').onclick = () => {
   }
 
   loginButton.addEventListener("click", doLogin);
+  if(confirmTransferButton) confirmTransferButton.addEventListener("click", confirmDeviceTransfer);
+  if(confirmNewPassword) confirmNewPassword.addEventListener("keydown", e => { if(e.key === "Enter") confirmDeviceTransfer(); });
+  if(cancelTransferButton) cancelTransferButton.addEventListener("click", async () => { pendingTransferUser = null; await signOut(auth); showLogin(); });
   password.addEventListener("keydown", e => { if(e.key === "Enter") doLogin(); });
   email.addEventListener("keydown", e => { if(e.key === "Enter") password.focus(); });
 
@@ -3218,6 +3339,7 @@ $('confirmBtn').onclick = () => {
         const allowed = await verifyOneDevice(user);
         if(!allowed) return;
         updateAccountBox(user);
+        startDeviceWatcher(user);
         showApp();
       }catch(e){
         await signOut(auth);
