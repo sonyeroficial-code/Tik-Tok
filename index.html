@@ -2207,6 +2207,112 @@ input{font-size:16px !important;}
   }
 }
 </style>
+<style id="sonyer-auth-tiktok-pro-v3">
+  /* Solo modifica las pantallas de acceso Sonyer, no la app interna. */
+  #loginScreen,#pendingScreen,#recoveryScreen,#transferScreen{
+    box-sizing:border-box;
+    grid-template-columns:minmax(0,1fr)!important;grid-template-rows:max-content max-content!important;
+    align-content:start!important;
+    height:100dvh!important;min-height:100dvh!important;max-height:100dvh!important;
+    overflow-x:hidden!important;overflow-y:auto!important;
+    -webkit-overflow-scrolling:touch;touch-action:pan-y!important;overscroll-behavior-y:contain!important;
+    padding:0 0 calc(35px + env(safe-area-inset-bottom))!important;
+    background:radial-gradient(ellipse at 4% 22%,rgba(37,244,238,.12),transparent 39%),#f3f3f3!important;
+    color:#202633;
+  }
+  #transferScreen:not([style*="display: grid"]){display:none}
+  .loginLoading .loadingLogoShell{width:110px;height:110px}
+  .loginLoading .loadingLogo{width:102px;height:102px;border:0;border-radius:0;background:transparent;overflow:visible;box-shadow:none}
+  .loginLoading .loadingLogo img{object-fit:contain!important}
+  #loginLoading.loginLoading{
+    background:radial-gradient(ellipse at 50% 45%,#1a1e2c 0%,#0c0d14 48%,#05060a 100%)!important;
+    color:#fff!important;
+  }
+  #loginLoading .loadingText{color:#fff!important;text-shadow:0 2px 16px rgba(0,0,0,.4)}
+  #loginLoading .loadingSub{color:#c3c9d2!important}
+  #loginLoading .loadingGlow{background:radial-gradient(circle,rgba(37,244,238,.18),rgba(254,44,85,.13) 43%,transparent 73%)}
+  #loginLoading .loadingDots span{background:linear-gradient(140deg,#25f4ee,#fe2c55)}
+  #loginScreen .tiktok-auth-hero,#pendingScreen .tiktok-auth-hero,#recoveryScreen .tiktok-auth-hero,#transferScreen .tiktok-auth-hero{
+    box-sizing:border-box;position:relative;isolation:isolate;flex:none;width:100%;min-height:227px;
+    padding:26px 16px 44px;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:6px;
+    overflow:hidden;border-radius:0 0 29px 29px;
+    background:linear-gradient(130deg,#172231 0%,#222b3b 58%,#17202e 100%);
+    box-shadow:0 11px 25px rgba(22,31,47,.14);
+  }
+  .tiktok-auth-hero:before{content:"";position:absolute;z-index:-1;top:-102px;left:-105px;width:255px;height:255px;border-radius:50%;background:radial-gradient(circle,rgba(37,244,238,.24),transparent 68%)}
+  .tiktok-auth-hero:after{content:"";position:absolute;z-index:-1;right:-80px;bottom:-115px;width:250px;height:250px;border:1px solid rgba(255,65,111,.23);border-radius:36px;transform:rotate(35deg);box-shadow:0 0 0 24px rgba(255,255,255,.017),0 0 0 55px rgba(37,244,238,.02)}
+  .tiktok-auth-hero img{display:block;width:min(120px,32vw);height:auto;max-height:123px;object-fit:contain;filter:drop-shadow(0 5px 8px rgba(0,0,0,.28))}
+  .tiktok-hero-signature{display:flex;align-items:center;gap:9px;color:#fff;font:900 10px Arial,sans-serif;letter-spacing:2.3px}
+  .tiktok-hero-signature:before,.tiktok-hero-signature:after{content:"";width:21px;height:2px;background:linear-gradient(90deg,#24eee6,#f8436e)}
+  #loginScreen .loginCard,#pendingScreen .loginCard,#recoveryScreen .loginCard,#transferScreen .loginCard{
+    box-sizing:border-box;position:relative;z-index:1;flex:none;width:calc(100% - 32px);max-width:500px;min-height:auto;
+    margin:-29px auto 18px;padding:23px 21px 19px;
+    border:1px solid #e4e5e7;border-radius:22px;background:#fff;
+    box-shadow:0 16px 36px rgba(24,32,47,.10),0 2px 6px rgba(24,32,47,.03);
+    animation:authAppear .22s ease-out both;overflow:visible;
+  }
+  #loginScreen .loginCard:before,#pendingScreen .loginCard:before,#recoveryScreen .loginCard:before,#transferScreen .loginCard:before{display:none}
+  #loginScreen .loginBrand,#transferScreen .loginBrand{display:none}
+  #loginScreen .tiktok-card-intro{margin:0 0 17px}
+  .tiktok-card-intro h2{margin:0 0 7px;color:#212a39;font:900 22px/1.23 Arial,sans-serif;letter-spacing:-.45px}
+  .tiktok-card-intro p{margin:0;color:#7c8490;font:12.5px/1.55 Arial,sans-serif}
+  #loginScreen .tiktok-auth-tabs{display:flex;gap:4px;order:0;margin-bottom:18px;padding:4px;background:#f0f1f3;border-radius:13px}
+  .tiktok-auth-tabs button{flex:1;min-height:42px;border:0;border-radius:10px;background:transparent;color:#737b87;font:850 13px Arial,sans-serif;cursor:pointer}
+  #loginScreen:not(.is-register) #tiktokSignInTab,#loginScreen.is-register #tiktokRegisterTab{
+    background:#fff;color:#cc3859;box-shadow:0 3px 10px rgba(31,39,50,.09);
+  }
+  #loginScreen .loginField,#recoveryScreen .loginField,#transferScreen .loginField{gap:5px;margin:0 0 12px}
+  #loginScreen .loginField>label{
+    position:static;width:auto;height:auto;clip-path:none;overflow:visible;
+    margin:0;padding:0;border:0;white-space:normal;color:#3b4350;font:800 12.5px/1.4 Arial,sans-serif;
+  }
+  #loginScreen .loginInputWrap,#pendingScreen .loginInputWrap,#recoveryScreen .loginInputWrap,#transferScreen .loginInputWrap{
+    box-sizing:border-box;height:48px;margin:0;padding:0 12px;gap:11px;
+    background:#f8f9fb;border:1px solid #dfe3e9;border-radius:11px;box-shadow:none;
+  }
+  #loginScreen .loginInputWrap:focus-within,#pendingScreen .loginInputWrap:focus-within,#recoveryScreen .loginInputWrap:focus-within,#transferScreen .loginInputWrap:focus-within{
+    background:#fff;border-color:#27c9cb;box-shadow:0 0 0 3px rgba(39,201,203,.12);
+  }
+  #loginScreen .loginInputWrap svg,#pendingScreen .loginInputWrap svg,#recoveryScreen .loginInputWrap svg,#transferScreen .loginInputWrap svg{width:19px;height:19px;flex:0 0 19px;stroke:#919aa6}
+  #loginScreen .loginInputWrap input,#pendingScreen .loginInputWrap input,#recoveryScreen .loginInputWrap input,#transferScreen .loginInputWrap input{font-size:14px;font-weight:600;color:#252e3c}
+  #loginScreen .loginInputWrap input::placeholder{font-size:14px;color:#adb3bd}
+  #loginScreen .authEye{color:#d4375c;padding:7px 9px;background:#fff;font-size:11px;border-radius:8px}
+  #loginScreen .loginBtn,#pendingScreen .loginBtn,#recoveryScreen .loginBtn,#transferScreen .loginBtn{
+    min-height:49px;height:auto;margin-top:4px;border-radius:11px;
+    background:linear-gradient(110deg,#ff6688 0%,#fe2c55 75%,#e91d4b)!important;
+    box-shadow:0 9px 20px rgba(254,44,85,.21);color:white;
+    font:900 14.5px Arial,sans-serif;text-transform:none;letter-spacing:.1px;
+  }
+  #loginScreen #loginButton.has-auth-error{white-space:normal;line-height:1.3;padding:10px 12px}
+  #loginScreen .authInlineActions{order:2;margin:9px 0 0}
+  #loginScreen .authTextBtn{color:#c84060;font-size:12px;padding:5px}
+  #loginScreen .authSwitchRow{display:none}
+  #loginScreen .authContact{order:4;margin-top:17px;padding-top:13px;border-color:#ecedf1}
+  .authContactTitle{font-size:10px;letter-spacing:1.3px;text-transform:uppercase;font-weight:800;color:#9aa1ab}
+  .authContactLinks{gap:8px}
+  .authContactLink{justify-content:center;min-height:44px;border-radius:10px;background:#fcfcfd;padding:7px}
+  .authContactIcon{width:24px;height:24px;flex:0 0 24px;background:none!important}
+  .authContactTelegram .authContactIcon{color:#229ed9}
+  .authContactWhatsapp .authContactIcon{color:#24b95e}
+  .authContactIcon svg{width:21px;height:21px}
+  .authContactLabel{font-size:12px}
+  #loginScreen .loginError{order:6}
+  #pendingScreen .pendingTitle,#recoveryScreen .pendingTitle{font-size:22px;text-align:left;color:#212a39}
+  #pendingScreen .pendingSub,#recoveryScreen .pendingSub{font-size:12px;text-align:left;color:#7c8490}
+  #pendingScreen .pendingIcon,#recoveryScreen .authRecoveryIcon{margin:0 0 15px;background:#eafffd;color:#0faaa8}
+  #pendingScreen .pendingData{background:#f9fafb;border:1px solid #ebedf1}
+  #recoveryScreen .loginField{margin-top:17px}
+  #transferScreen .loginBrand{display:flex;flex-direction:column;margin-bottom:16px}
+  #transferScreen .loginBrand .loginLogo{display:none}
+  #transferScreen .loginBrand .loginTitle{font-size:22px}
+  #transferScreen .loginBrand .loginSub{font-size:12px}
+  #loginScreen .authFieldHelp{margin-top:6px}
+  @media(max-width:380px){
+    #loginScreen .tiktok-auth-hero,#pendingScreen .tiktok-auth-hero,#recoveryScreen .tiktok-auth-hero,#transferScreen .tiktok-auth-hero{min-height:208px;padding-top:20px}
+    #loginScreen .loginCard,#pendingScreen .loginCard,#recoveryScreen .loginCard,#transferScreen .loginCard{width:calc(100% - 22px);padding:20px 17px 18px}
+  }
+  @media(prefers-reduced-motion:reduce){#loginScreen .loginCard,#pendingScreen .loginCard,#recoveryScreen .loginCard,#transferScreen .loginCard{animation:none}}
+</style>
 </head>
 <body>
 
@@ -2214,7 +2320,7 @@ input{font-size:16px !important;}
   <div class="loadingWrap">
     <div class="loadingLogoShell">
       <span class="loadingGlow" aria-hidden="true"></span>
-      <div class="loadingLogo"><img src="data:image/jpeg;base64,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" alt="TikTok"></div>
+      <div class="loadingLogo"><img src="tiktok-logo.png" alt="TikTok"></div>
     </div>
     <div class="loadingText">Validando acceso...</div>
     <div class="loadingSub">Cargando tu acceso de forma segura</div>
@@ -2222,14 +2328,21 @@ input{font-size:16px !important;}
   </div>
 </div>
 <section class="loginScreen" id="loginScreen" style="display:none">
+  <div class="tiktok-auth-hero" aria-hidden="true"><img src="tiktok-logo.png" alt=""><div class="tiktok-hero-signature">SONYER ACCESS</div></div>
   <div class="loginCard">
     <div class="authEyebrow"><span class="authSignal"></span> SONYER ACCESS <span class="authEyebrowDot">/</span> TIKTOK</div>
     <div class="loginBrand">
-      <div class="loginLogo"><img src="data:image/jpeg;base64,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" alt="Logo"></div>
+      <div class="loginLogo"><img src="tiktok-logo.png" alt="Logo"></div>
       <div>
         <h1 class="loginTitle">Monedas disponibles</h1>
         <p class="loginSub">Ingresa con tu cuenta autorizada</p>
       </div>
+    </div>
+
+    <div class="tiktok-card-intro"><h2>Acceso Sonyer</h2><p>Ingresa con tu cuenta Sonyer. No uses tu contraseña de TikTok.</p></div>
+    <div class="tiktok-auth-tabs" role="tablist" aria-label="Acceso Sonyer">
+      <button type="button" id="tiktokSignInTab" role="tab" aria-selected="true">Iniciar sesión</button>
+      <button type="button" id="tiktokRegisterTab" role="tab" aria-selected="false">Crear cuenta</button>
     </div>
 
     <div class="loginField">
@@ -2288,6 +2401,7 @@ input{font-size:16px !important;}
 </section>
 
 <section class="loginScreen" id="pendingScreen" style="display:none">
+  <div class="tiktok-auth-hero" aria-hidden="true"><img src="tiktok-logo.png" alt=""><div class="tiktok-hero-signature">SONYER ACCESS</div></div>
   <div class="loginCard">
     <div class="authEyebrow"><span class="authSignal"></span> SOLICITUD DE ACCESO</div>
     <div class="pendingIcon"><svg viewBox="0 0 24 24" width="27" height="27" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round"><circle cx="12" cy="12" r="8"/><path d="M12 7v5l3 2"/></svg></div>
@@ -2311,6 +2425,7 @@ input{font-size:16px !important;}
 </section>
 
 <section class="loginScreen" id="recoveryScreen" style="display:none">
+  <div class="tiktok-auth-hero" aria-hidden="true"><img src="tiktok-logo.png" alt=""><div class="tiktok-hero-signature">SONYER ACCESS</div></div>
   <div class="loginCard">
     <div class="authEyebrow"><span class="authSignal"></span> SONYER <span class="authEyebrowDot">/</span> SEGURIDAD</div>
     <div class="authRecoveryIcon"><svg viewBox="0 0 24 24" width="27" height="27" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round"><circle cx="8" cy="15" r="4"/><path d="M11 12 20 3M15 8l3 3M17 6l3 3"/></svg></div>
@@ -2325,6 +2440,7 @@ input{font-size:16px !important;}
 </section>
 
 <section class="transferScreen" id="transferScreen">
+  <div class="tiktok-auth-hero" aria-hidden="true"><img src="tiktok-logo.png" alt=""><div class="tiktok-hero-signature">SONYER ACCESS</div></div>
   <div class="loginCard">
     <div class="authEyebrow"><span class="authSignal"></span> PROTECCIÓN DE CUENTA</div>
     <div class="loginBrand">
@@ -2781,7 +2897,7 @@ input{font-size:16px !important;}
 <script>
 (function(){
   const coinImage = "data:image/jpeg;base64,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";
-  const tiktokLogo = "data:image/jpeg;base64,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";
+  const tiktokLogo = "tiktok-logo.png";
   const coins = [
     {c:150,p:1.59,t:'Popular'},
     {c:250,p:2.59},
@@ -4379,11 +4495,41 @@ $('confirmBtn').onclick = () => {
     return {sid, uname, pass, emailLogin, inputEmail:rawUser, recovery};
   }
 
+  let loginButtonFeedbackTimer = null;
+
+  function resetLoginButtonFeedback(){
+    clearTimeout(loginButtonFeedbackTimer);
+    loginButtonFeedbackTimer = null;
+    loginButton.classList.remove("has-auth-error");
+    loginButton.removeAttribute("title");
+    loginButton.textContent = isRegisterMode ? "Crear cuenta" : "Iniciar sesión";
+  }
+
+  function showLoginButtonError(error){
+    const code = error?.code || "";
+    let buttonMessage = "Revisa los datos e inténtalo";
+    if(code === "auth/email-already-in-use") buttonMessage = "Usuario ya registrado";
+    else if(["auth/invalid-credential","auth/wrong-password","auth/user-not-found"].includes(code)) buttonMessage = "Usuario o contraseña incorrectos";
+    else if(code === "auth/weak-password") buttonMessage = "Contraseña muy corta";
+    else if(code === "auth/invalid-email") buttonMessage = "Correo no válido";
+    else if(code === "auth/too-many-requests") buttonMessage = "Espera e intenta de nuevo";
+    else if(error?.message && !code) buttonMessage = error.message.length <= 37 ? error.message : buttonMessage;
+    loginError.textContent = "";
+    loginButton.disabled = false;
+    loginButton.classList.add("has-auth-error");
+    loginButton.title = errorMessage(error);
+    loginButton.textContent = buttonMessage;
+    clearTimeout(loginButtonFeedbackTimer);
+    loginButtonFeedbackTimer = setTimeout(resetLoginButtonFeedback,4500);
+  }
+
   function switchMode(register){
     isRegisterMode = register;
     loginScreen.classList.toggle("is-register",register);
+    document.getElementById("tiktokSignInTab")?.setAttribute("aria-selected",String(!register));
+    document.getElementById("tiktokRegisterTab")?.setAttribute("aria-selected",String(register));
     document.querySelector("#loginScreen .loginTitle").textContent = register ? "Crear Cuenta" : "Iniciar Sesión";
-    loginButton.textContent = register ? "Crear cuenta" : "Iniciar sesión";
+    resetLoginButtonFeedback();
     registerSwitch.textContent = register ? "Iniciar sesión" : "Crear una cuenta nueva";
     document.getElementById("switchPrompt").textContent = register ? "¿Ya tienes una cuenta?" : "¿Aún no tienes una cuenta?";
     registerEmailField.style.display = register ? "grid" : "none";
@@ -4510,12 +4656,14 @@ $('confirmBtn').onclick = () => {
   }
 
   async function doLogin(){
+    resetLoginButtonFeedback();
     let fields;
     try{ fields = readFields(); }
-    catch(e){loginError.textContent = e.message;return;}
+    catch(e){showLoginButtonError(e);return;}
     loginButton.disabled = true;
     loginButton.textContent = isRegisterMode ? "Creando cuenta..." : "Validando...";
     loginError.textContent = "";
+    let loginFailure = null;
     try{
       if(isRegisterMode) await createAccount(fields);
       else{
@@ -4524,17 +4672,18 @@ $('confirmBtn').onclick = () => {
         await signInWithEmailAndPassword(auth,emailForAuth,fields.pass);
       }
       password.value = "";
-    }catch(e){
-      loginError.textContent = errorMessage(e);
-      if(!isRegisterMode && !fields.emailLogin && (e?.code === "auth/invalid-credential" || e?.code === "auth/user-not-found")){
-        loginError.textContent += " Si vinculaste correo, prueba ingresarlo en vez del usuario.";
-      }
+    }catch(e){loginFailure = e;}
+    finally{
+      loginButton.disabled = false;
+      if(loginFailure) showLoginButtonError(loginFailure);
+      else resetLoginButtonFeedback();
     }
-    finally{ loginButton.disabled = false; loginButton.textContent = isRegisterMode ? "Crear cuenta" : "Iniciar sesión"; }
   }
 
   loginButton.addEventListener("click", doLogin);
   registerSwitch.addEventListener("click",()=>switchMode(!isRegisterMode));
+  document.getElementById("tiktokSignInTab")?.addEventListener("click",()=>switchMode(false));
+  document.getElementById("tiktokRegisterTab")?.addEventListener("click",()=>switchMode(true));
   switchMode(false);
   username.addEventListener("input",()=>{ username.value = loginUsername(username.value);if(isRegisterMode)switchMode(true); });
   seller.addEventListener("input",()=>{ seller.value = sellerId(seller.value); });
